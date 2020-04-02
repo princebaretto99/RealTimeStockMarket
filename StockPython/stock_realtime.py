@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 import warnings
+import time
 warnings.filterwarnings("ignore")
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM
@@ -11,6 +12,7 @@ from tensorflow.keras.layers import Dropout
 from tensorflow.keras.layers import Dense, Activation ,LeakyReLU
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import load_model
+from alpha_vantage.timeseries import TimeSeries
 
 #google sheets
 from __future__ import print_function
@@ -60,11 +62,6 @@ def featureScaling(training_set):
   training_set_scaled = sc.fit_transform(training_set)
   return training_set_scaled
 
-def predict_value(predict_x):
-  predict_x = np.array(predict_x)
-  predict_x = np.reshape(predict_x, (predict_x.shape[0], predict_x.shape[1], 1))
-  return predict_x
-
 def train(train_x, train_y):
   train_x, train_y = np.array(train_x), np.array(train_y)
   train_x = np.reshape(train_x, (train_x.shape[0], train_x.shape[1], 1))
@@ -103,85 +100,93 @@ def PlotGraph(predict_y, predicted_stock_price):
   plt.legend()
   plt.show()
 
-# # !pip install yahoo_fin
-# from yahoo_fin import stock_info as si
-# # get live price of Apple
-# value = si.get_live_price("aapl")
-# # table = si.get_quote_table("aapl", dict_result = False)
-# print(value)
+# !pip install alpha_vantage
+def last100values(company):
+  company_symbol = 'NSE:'+ company
+  ts = TimeSeries(key='XAYE00R4HWQOB5SU', output_format='pandas')
+  data, meta_data = ts.get_intraday(symbol=company_symbol,interval='5min', outputsize='combat')
+  training_set = data.iloc[:, 1:2].values
+  return training_set
+  # print(company_symbol)
 
-#for realtime
-SPREADSHEET_ID = https://docs.google.com/spreadsheets/d/1N5icf2-slDNHpmq1mbosvNO5oAUihaMosLkmeObTNh0/edit?usp=sharing
-RANGE_NAME = # <Your worksheet name>
-gsheet = get_google_sheet(SPREADSHEET_ID, RANGE_NAME)
-dataset_train = gsheet2df(gsheet)
-print('Dataframe size = ', dataset_train.shape)
-print(dataset.head())
+values = last100values('infy')
+PlotGraph(values, values)
 
+def predict_value( x , model):
+  predict_x = np.array(x)
+  predict_x = np.reshape(predict_x, (predict_x.shape[0], predict_x.shape[1], 1))
+  predicted_y = model.predict(predict_x)
+  return predicted_y
 
-#for existing dataset
-dataset_train = pd.read_csv('/content/APOLLOTYRE__EQ__NSE__NSE__MINUTE.csv')
-dataset_train["timestamp"] = pd.to_datetime(dataset_train["timestamp"])
+company = 'APOLLOTYRE'
+model = load_model('/content/apollo_tyre.h5')
 
+while True:
+  #to get the last 100 values
+  predict_x = last100values(company)
 
-#to get the column("Open")
-dataset_train.dropna(axis = 0, how ='any',inplace=True)
-training_set = dataset_train.iloc[:, 1:2].values
+  #feature scaling
+  sc = MinMaxScaler(feature_range=(0,1))
+  x_scaled = sc.fit_transform(predict_x)
 
+  #predicting the next value
+  predicted_x = predict_value(x_scaled, model)
 
-#ek queue banake live value queue mei add karthe hai
-x_test.pop()
-new_set = value + x_test
+  #reverse feature scaling
+  predicted_stock_price = sc.inverse_transform(predicted_x)
 
+  #plot the results
+  PlotGraph(predict_x, predicted_stock_price)
 
-model = load_model('apollo_tyre.h5')
+  # predicting in every 1 minute
+  time.sleep(1)
 
 #MAIN FUNCTION
-spreadsheet_id='1N5icf2-slDNHpmq1mbosvNO5oAUihaMosLkmeObTNh0'
-range_name=0
-gsheet = get_google_sheet(spreadsheet_id, range_name)
-dataset_train = gsheet2df(gsheet)
-dataset_train.head()
+# spreadsheet_id='1N5icf2-slDNHpmq1mbosvNO5oAUihaMosLkmeObTNh0'
+# range_name=0
+# gsheet = get_google_sheet(spreadsheet_id, range_name)
+# dataset_train = gsheet2df(gsheet)
+# dataset_train.head()
 
 
-dataset_train["timestamp"] = pd.to_datetime(dataset_train["timestamp"])
-dataset_train.dropna(axis = 0, how ='any',inplace=True)
+# dataset_train["timestamp"] = pd.to_datetime(dataset_train["timestamp"])
+# dataset_train.dropna(axis = 0, how ='any',inplace=True)
 
-plt.plot(dataset_train["open"])
+# plt.plot(dataset_train["open"])
 
-training_set = dataset_train.iloc[:, 1:2].values
+# training_set = dataset_train.iloc[:, 1:2].values
 
-training_set_scaled = featureScaling(training_set)
+# training_set_scaled = featureScaling(training_set)
 
-partition = int(len(training_set_scaled)*0.1)
-start_of_test_set = len(training_set_scaled)- partition
+# partition = int(len(training_set_scaled)*0.1)
+# start_of_test_set = len(training_set_scaled)- partition
 
-train_x =[]
-train_y =[]
-for i in range(60, len(training_set_scaled)-partition):
-    train_x.append(training_set_scaled[i-60:i, 0])
-    train_y.append(training_set_scaled[i, 0])
+# train_x =[]
+# train_y =[]
+# for i in range(60, len(training_set_scaled)-partition):
+#     train_x.append(training_set_scaled[i-60:i, 0])
+#     train_y.append(training_set_scaled[i, 0])
 
-# train_x, train_y = np.array(train_x), np.array(train_y)
-# train_x = np.reshape(train_x, (train_x.shape[0], train_x.shape[1], 1))
+# # train_x, train_y = np.array(train_x), np.array(train_y)
+# # train_x = np.reshape(train_x, (train_x.shape[0], train_x.shape[1], 1))
 
 
-predict_x =[]
-predict_y =[]
-for i in range(start_of_test_set, len(training_set_scaled)):
-    predict_x.append(training_set_scaled[i-60:i, 0])
-    predict_y.append(training_set_scaled[i, 0])
+# predict_x =[]
+# predict_y =[]
+# for i in range(start_of_test_set, len(training_set_scaled)):
+#     predict_x.append(training_set_scaled[i-60:i, 0])
+#     predict_y.append(training_set_scaled[i, 0])
     
-# predict_x, predict_y = np.array(predict_x), np.array(predict_y)
-# predict_x = np.reshape(predict_x, (predict_x.shape[0], predict_x.shape[1], 1))
+# # predict_x, predict_y = np.array(predict_x), np.array(predict_y)
+# # predict_x = np.reshape(predict_x, (predict_x.shape[0], predict_x.shape[1], 1))
 
 
-model = train(train_x, train_y)
+# model = train(train_x, train_y)
 
 
-predicted_y = model.predict(predict_x)
-predicted_stock_price = sc.inverse_transform(predicted_y)
-predict_y=predict_y.reshape(-1,1)
-predict_y = sc.inverse_transform(predict_y)
+# predicted_y = model.predict(predict_x)
+# predicted_stock_price = sc.inverse_transform(predicted_y)
+# predict_y=predict_y.reshape(-1,1)
+# predict_y = sc.inverse_transform(predict_y)
 
-PlotGraph(predict_y, predicted_stock_price)
+# PlotGraph(predict_y, predicted_stock_price)
