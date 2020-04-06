@@ -88,7 +88,7 @@ def train(train_x, train_y):
   model.fit(train_x,train_y,epochs=20,batch_size=64)
   print("......GET UP!!!!!!!!!!!!!!!")
 
-  model.save('apollo_tyre.h5')
+  model.save('LSTM.h5')
   return model
 
 def PlotGraph(predict_y, predicted_stock_price):
@@ -109,8 +109,8 @@ def last100values(company):
   return training_set
   # print(company_symbol)
 
-values = last100values('infy')
-PlotGraph(values, values)
+# values = last100values('infy')
+# PlotGraph(values, values)
 
 def predict_value( x , model):
   predict_x = np.array(x)
@@ -119,7 +119,7 @@ def predict_value( x , model):
   return predicted_y
 
 company = 'APOLLOTYRE'
-model = load_model('../WeightFile/weight_file.h5')
+model = load_model('../WeightFile/LSTM.h5')
 
 while True:
   #to get the last 100 values
@@ -135,58 +135,11 @@ while True:
   #reverse feature scaling
   predicted_stock_price = sc.inverse_transform(predicted_x)
 
+  #RMSE value
+  print("Final rmse value is =",np.sqrt(np.mean((predicted_x - predicted_stock_price)**2)))
+
   #plot the results
   PlotGraph(predict_x, predicted_stock_price)
 
   # predicting in every 1 minute
   time.sleep(1)
-
-#MAIN FUNCTION
-# spreadsheet_id='1N5icf2-slDNHpmq1mbosvNO5oAUihaMosLkmeObTNh0'
-# range_name=0
-# gsheet = get_google_sheet(spreadsheet_id, range_name)
-# dataset_train = gsheet2df(gsheet)
-# dataset_train.head()
-
-
-# dataset_train["timestamp"] = pd.to_datetime(dataset_train["timestamp"])
-# dataset_train.dropna(axis = 0, how ='any',inplace=True)
-
-# plt.plot(dataset_train["open"])
-
-# training_set = dataset_train.iloc[:, 1:2].values
-
-# training_set_scaled = featureScaling(training_set)
-
-# partition = int(len(training_set_scaled)*0.1)
-# start_of_test_set = len(training_set_scaled)- partition
-
-# train_x =[]
-# train_y =[]
-# for i in range(60, len(training_set_scaled)-partition):
-#     train_x.append(training_set_scaled[i-60:i, 0])
-#     train_y.append(training_set_scaled[i, 0])
-
-# # train_x, train_y = np.array(train_x), np.array(train_y)
-# # train_x = np.reshape(train_x, (train_x.shape[0], train_x.shape[1], 1))
-
-
-# predict_x =[]
-# predict_y =[]
-# for i in range(start_of_test_set, len(training_set_scaled)):
-#     predict_x.append(training_set_scaled[i-60:i, 0])
-#     predict_y.append(training_set_scaled[i, 0])
-    
-# # predict_x, predict_y = np.array(predict_x), np.array(predict_y)
-# # predict_x = np.reshape(predict_x, (predict_x.shape[0], predict_x.shape[1], 1))
-
-
-# model = train(train_x, train_y)
-
-
-# predicted_y = model.predict(predict_x)
-# predicted_stock_price = sc.inverse_transform(predicted_y)
-# predict_y=predict_y.reshape(-1,1)
-# predict_y = sc.inverse_transform(predict_y)
-
-# PlotGraph(predict_y, predicted_stock_price)
