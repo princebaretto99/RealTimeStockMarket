@@ -1,0 +1,23 @@
+<div class="form-container">
+  <form method="POST" action="/login" class="form">
+    <div class="form-heading">
+      Login
+    </div>
+    {{#if message}}
+      <div class="alert alert-danger" role="alert">
+          {{message}}
+      </div>
+    {{/if}}
+    <div class="form-group input-group-sm">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" name="username" required>
+    </div>
+    <div class="form-group input-group-sm">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" name="password" required>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-block">Sign In</button>
+    </div>
+  </form>
+</div>
