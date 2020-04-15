@@ -3,11 +3,12 @@ var router = express.Router();
 
 
 /* GET home page. */
-router.get('/dashboard', async (req, res) => {
+router.get('/', async (req, res) => {
 
   const username = req.user.username;
 
-  res.render('/dashboard', {
+
+  res.render('dashboard', {
     title: 'Welcome '+username+"!!"
   });
 });
