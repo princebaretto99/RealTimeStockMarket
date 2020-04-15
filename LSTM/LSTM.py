@@ -104,7 +104,7 @@ def PlotGraph(predict_y, predicted_stock_price):
 def last100values(company):
   company_symbol = 'NSE:'+ company
   ts = TimeSeries(key='XAYE00R4HWQOB5SU', output_format='pandas')
-  data, meta_data = ts.get_intraday(symbol=company_symbol,interval='5min', outputsize='combat')
+  data, meta_data = ts.get_intraday(symbol=company_symbol,interval='15min', outputsize='combat')
   training_set = data.iloc[:, 1:2].values
   return training_set
   # print(company_symbol)
