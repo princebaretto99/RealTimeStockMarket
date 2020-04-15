@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/', function(req, res) {
   if (req.user) {
-    res.render('dashboard')
+    res.redirect('dashboard')
   } else {
     res.render('login');
   }

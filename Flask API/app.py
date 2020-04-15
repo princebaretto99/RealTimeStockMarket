@@ -51,7 +51,7 @@ def getNewValue(latest_data,name):
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 
-@app.route("/api/getall/<name>")
+@app.route("/api/getall/<name>", methods = ['GET'])
 def home(name):
     company = name
    
@@ -90,3 +90,8 @@ def home(name):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
+
+# cors error = "https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9"

@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/', function(req, res) {
   if (req.user) {
-    res.redirect('/');
+    res.redirect('/dashboard');
   } else {
     res.render('register');
   }
@@ -28,7 +28,7 @@ router.post('/', function(req, res, next) {
           if (err) {
             return next(err);
           } else {
-            res.redirect('/');
+            res.redirect('/dashboard');
           }
         })
       })

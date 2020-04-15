@@ -9,7 +9,8 @@ router.get('/', async (req, res) => {
 
 
   res.render('dashboard', {
-    title: 'Welcome '+username+"!!"
+    title: 'Welcome '+username+"!!",
+    username
   });
 });
 

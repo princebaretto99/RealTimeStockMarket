@@ -16,8 +16,10 @@
       <div class="heading">
         <img src="https://www.logopeople.in/blog/wp-content/uploads/2013/01/government-of-india.jpg" alt="">
         <div class="info">
-          <h3><a href="#"> Minister for Agriculture and Farmers’ Welfare</a></h3>
-          <p>Growing the Future!!</p>
+          <h3><a href="#">STONKS</a></h3>
+          {{#if username }}
+              <p>{{username}}</p>
+          {{/if}}
         </div>
       </div>
       <div class="search">
@@ -43,7 +45,7 @@
               <li><a href="#">ipsum dolor sit</a></li>
             </ul>
           </li>
-          <li><i class="fa fa-support fa-fw"></i><a href="#charts"> Pending Approvals</a></li>
+          <li><i class="fa fa-support fa-fw"></i><a href="/logout">Logout</a></li>
       </ul>
     </aside>
     <section id="contents">
@@ -117,96 +119,56 @@
           </div>
         </div>
       </section>
-      <section class="charts">
-        <div class="container-fluid">
+
+
+
+
+  <section class="charts">
+    <div class="container-fluid">
+
           <div class="row">
             <div class="col-md-6">
               <div class="chart-container">
-                <h3>Chart</h3>
-                <canvas id="myChart"></canvas>
+                <h3>LSTM</h3>
+                <canvas id="lstm"></canvas>
               </div>
             </div>
+
             <div class="col-md-6">
               <div class="chart-container">
-                <h3>Chart2</h3>
-                <canvas id="myChart2"></canvas>
+                <h3>Convolutional-LSTM</h3>
+                <canvas id="cnn_lstm"></canvas>
               </div>
             </div>
-          </div>
+
+            <div class="col-md-6">
+              <div class="chart-container">
+                <h3>GRU</h3>
+                <canvas id="gru"></canvas>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="chart-container">
+                <h3>Convolutional-GRU</h3>
+                <canvas id="cnn_gru"></canvas>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="chart-container">
+                <h3>Convolutional Neural Network</h3>
+                <canvas id="cnn"></canvas>
+              </div>
+            </div>
+
         </div>
-      </section>
-      <section class="admins">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="box">
-                <h3>Admins:</h3>
-                <div class="admin">
-                  <div class="img">
-                    <img class="img-responsive" src="https://uniim1.shutterfly.com/ng/services/mediarender/THISLIFE/021036514417/media/23148906966/small/1501685402/enhance" alt="admin">
-                  </div>
-                  <div class="info">
-                    <form action="/farm_result" method="POST">
-                      <h3>Joge Lucky</h3>
-                      <button type="submit" value="+919594246827" name="submit">Submit</button>
-                    </form>
-                    <p>Lorem ipsum dolor sit amet.</p>
-                  </div>
-                </div>
-                <div class="admin">
-                  <div class="img">
-                    <img class="img-responsive" src="https://uniim1.shutterfly.com/ng/services/mediarender/THISLIFE/021036514417/media/23148907137/small/1501685404/enhance" alt="admin">
-                  </div>
-                  <div class="info">
-                    <h3>Joge Lucky</h3>
-                    <p>Lorem ipsum dolor sit amet.</p>
-                  </div>
-                </div>
-                <div class="admin">
-                  <div class="img">
-                    <img class="img-responsive" src="https://uniim1.shutterfly.com/ng/services/mediarender/THISLIFE/021036514417/media/23148907019/small/1501685403/enhance" alt="admin">
-                  </div>
-                  <div class="info">
-                    <h3>Joge Lucky</h3>
-                    <p>Lorem ipsum dolor sit amet.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="box">
-                <h3>Moderators:</h3>
-                <div class="admin">
-                  <div class="img">
-                    <img class="img-responsive" src="https://uniim1.shutterfly.com/ng/services/mediarender/THISLIFE/021036514417/media/23148907114/small/1501685404/enhance" alt="admin">
-                  </div>
-                  <div class="info">
-                    <h3>Joge Lucky</h3>
-                    <p>Lorem ipsum dolor sit amet.</p>
-                  </div>
-                </div>
-                <div class="admin">
-                  <div class="img">
-                    <img class="img-responsive" src="https://uniim1.shutterfly.com/ng/services/mediarender/THISLIFE/021036514417/media/23148907086/small/1501685404/enhance" alt="admin">
-                  </div>
-                  <div class="info">
-                    <h3>Joge Lucky</h3>
-                    <p>Lorem ipsum dolor sit amet.</p>
-                  </div>
-                </div>
-                <div class="admin">
-                  <div class="img">
-                    <img class="img-responsive" src="https://uniim1.shutterfly.com/ng/services/mediarender/THISLIFE/021036514417/media/23148907008/medium/1501685726/enhance" alt="admin">
-                  </div>
-                  <div class="info">
-                    <h3>Joge Lucky</h3>
-                    <p>Lorem ipsum dolor sit amet.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          </section>
+    </div>
+  </section>
+
+
+
+
         <section class='statis text-center'>
           <div class="container-fluid">
             <div class="row">
@@ -258,79 +220,6 @@
         </section>
       </section>
 
-      <section id="2"></section>
-<form action="home" method="POST">
-<section id="container1" class="add" style="height: 100%; width:100%;" >
-    <h1 class="col-lg-12" style="text-align: center; color: #b09db9;">FILL THE 7/12 EXTRACT!!</h1>
-
-<span class="input col-sm-4">
-    <input type="text" class="input__field" id="input-1" name="rainfall" required />
-    <label for="input-1" class="input__label">
-    <span class="input__label-content">Enter Rainfall(in cms)</span>
-</label>
-</span>
-
-<span class="input col-sm-4">
-    <input type="number" class="input__field" id="input-2" name="humidty" required />
-    <label for="input-2" class="input__label">
-    <span class="input__label-content">Enter Humidity</span>
-    </label>
-</span>
-
-<span class="input col-sm-4">
-    <input type="text" class="input__field" id="input-3" name="irrigation" required />
-    <label for="input-3" class="input__label">
-    <span class="input__label-content">Irrigation(0:Yes,1:No)</span>
-    </label>
-</span>
-
-<span class="input col-sm-4">
-    <input type="text" class="input__field" id="input-4" name="region" required/>
-    <label for="input-4" class="input__label">
-    <span class="input__label-content">Enter Region</span>
-    </label>
-</span>
-
-<span class="input col-sm-4">
-  <input type="number" class="input__field" id="input-5" name="crop" required />
-  <label for="input-5" class="input__label">
-  <span class="input__label-content">Enter type of crop</span>
-  </label>
-</span>
-
-<span class="input col-sm-4">
-  <input type="text" class="input__field" id="input-6" name="startmonth" required />
-  <label for="input-6" class="input__label">
-  <span class="input__label-content">Enter Starting month no.</span>
-  </label>
-</span>
-
-<span class="input col-sm-4">
-  <input type="number" class="input__field" id="input-7" name="cultivationtime" required />
-  <label for="input-7" class="input__label">
-  <span class="input__label-content">Time for Cultivation</span>
-  </label>
-</span>
-
-<span class="input col-sm-4">
-  <input type="text" class="input__field" id="input-8" name="min" required />
-  <label for="input-8" class="input__label">
-  <span class="input__label-content">Enter min. Temperature</span>
-  </label>
-</span>
-
-<span class="input col-sm-4">
-    <input type="number" class="input__field" id="input-9" name="max" required></input>
-    <label for="input-9" class="input__label">
-    <span class="input__label-content">Enter max. Temperature</span>
-    </label>
-</span>
-
-<span class="col-lg-6" style="padding-left: 220px;">
-<button id="send-button" type="submit">Predict!!</button></span>
-
-</section>
-</form>
 
 <style>
     @import url(https://fonts.googleapis.com/css?family=Raleway:200,500,700,800);
@@ -744,11 +633,15 @@ body {background-color: #2a2b3d}
 /* Start charts */
 .charts {
   margin-top: 25px;
-  color: #BBB
+  color: #BBB;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 .charts .chart-container {
   background-color: #313348;
   padding: 15px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 .charts .chart-container h3 {
   margin: 0 0 10px;
@@ -841,18 +734,6 @@ body {background-color: #2a2b3d}
   padding: 15px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 .main-color {
   color: #ffc107
 }
@@ -860,9 +741,6 @@ body {background-color: #2a2b3d}
 .danger {background-color: #d9534f}
 .success {background-color: #5cb85c}
 .inf {background-color: #5bc0de}
-
-
-/* كمية الإمبورتات دى علشان البوتستراب تبطل غتاته وتسيب العناصر اللى متعدله فى حالها طبعا الكلام ده فى كود بن بس */
 
 /* Start bootstrap */
 .navbar-right .dropdown-menu {
@@ -1059,169 +937,40 @@ var min_temp_list=[]
 var max_temp_list=[]
 
 async function getJson(){
-    var response = await fetch('/getExcelData');
-    var jsondata = await response.json();
+  
+  let company = "INFY"
+  let response = await fetch('http://127.0.0.1:5000/api/getall/'+ company);
 
-    return jsondata
+  if (response.ok) {
+    var json = await response.json();
+    console.log(json);
+  } else {
+    alert("HTTP-Error: " + response.status);
+  }
+
+  return json
 }
-getJson().then( data => {
-    rainfall_list = data.rainfall
-    crop_list = data.crops
-    var chart = document.getElementById('myChart');
-    var myChart = new Chart(chart, {
-        type: 'bar',
-        data: {
-            labels: crop_list,
-            datasets: [{
-            label: "Rainfall",
-            fill: false,
-            lineTension: 0,
-            data: rainfall_list,
-            pointBorderColor: "#4bc0c0",
-            borderColor: '#4bc0c0',
-            borderWidth: 2,
-            showLine: true,
-            }]
-        },
-    });
-})
+
+
 setInterval(()=>{
   getJson().then( data => {
-    rainfall_list = data.rainfall
-    crop_list = data.crops
-    var chart = document.getElementById('myChart');
-    var myChart = new Chart(chart, {
-        type: 'bar',
-        data: {
-            labels: crop_list,
-            datasets: [{
-            label: "Rainfall",
-            fill: false,
-            lineTension: 0,
-            data: rainfall_list,
-            pointBorderColor: "#4bc0c0",
-            borderColor: '#4bc0c0',
-            borderWidth: 2,
-            showLine: true,
-            }]
-        },
-    });
-})
-},10000)
 
-getJson().then( data =>{
-    humid_list = data.humidity
-    crop_list = data.crops
-    var Chart2 = document.getElementById('myChart2').getContext('2d');
-    var chart = new Chart(Chart2, {
-      type: 'line',
-      data: {
-        labels: ["Rice", "Sugarcane","Jowar","Bajra","Cotton","Soyabean","Ragi"],
-        datasets: [{
-          label: "Humidity",
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 79, 116)',
-          borderWidth: 2,
-          pointBorderColor: false,
-          data: humid_list,
-          fill: false,
-          lineTension: 0,
-        }]
-      },
+    var sequence = data["sequence"];
+    var lstm = data['sequence'].append(data['LSTM']);
+    var cnnlstm = data['sequence'].append(data['CNNLSTM']);
+    var gru = data['sequence'].append(data['GRU']);
+    var cnngru = data['sequence'].append(data['CNNGRU']);
+    var cnn = data['sequence'].append(data['CNN']);
 
-      // Configuration options
-      options: {
-        title: {
-          display: false
-        }
-      }
-    });
-  })
-
-
-setInterval(()=>{
-  getJson().then( data =>{
-    humid_list = data.humidity
-    irri_list = data.irri
+    console.log(sequence,lstm,cnnlstm);
     
-    var Chart2 = document.getElementById('myChart2').getContext('2d');
-    var chart = new Chart(Chart2, {
+    var lstm_chart = document.getElementById('lstm');
+    var myChart = new Chart(lstm_chart, {
       type: 'line',
       data: {
-        labels: ["Rice", "Sugarcane","Jowar","Bajra","Soyabean","Ragi","Cotton"],
+        labels: ["Time"],
         datasets: [{
-          label: "Humidity",
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 79, 116)',
-          borderWidth: 2,
-          pointBorderColor: false,
-          data: humid_list,
-          fill: false,
-          lineTension: 0,
-        }]
-      },
-
-      // Configuration options
-      options: {
-        title: {
-          display: false
-        }
-      }
-    });
-  })
-},10000)
-
-
-
-
-// console.log(Chart.defaults.global);
-
-getJson().then( data => {
-  min_temp_list = data.min
-  max_temp_list = data.max
-  var chart = document.getElementById('chart3');
-  var myChart = new Chart(chart, {
-    type: 'line',
-    data: {
-      labels: ["Rice", "Sugarcane","Jowar","Bajra","Cotton","Soyabean","Ragi"],
-      datasets: [{
-        label: "Minimum Temperature",
-        fill: false,
-        lineTension: .5,
-        pointBorderColor: "transparent",
-        pointColor: "white",
-        borderColor: '#d9534f',
-        borderWidth: 0,
-        showLine: true,
-        data: min_temp_list,
-        pointBackgroundColor: 'transparent',
-      },{
-        label: "Maximum Temperature",
-        fill: false,
-        lineTension: .5,
-        pointColor: "white",
-        borderColor: '#5cb85c',
-        borderWidth: 0,
-        showLine: true,
-        data: max_temp_list,
-        pointBackgroundColor: 'transparent',
-      }]
-    },
-  });
-})
-
-
-setInterval(()=>{
-  getJson().then( data => {
-    min_temp_list = data.min
-    max_temp_list = data.max
-    var chart = document.getElementById('chart3');
-    var myChart = new Chart(chart, {
-      type: 'line',
-      data: {
-        labels: ["Rice", "Sugarcane","Jowar","Bajra","Cotton","Soyabean","Ragi"],
-        datasets: [{
-          label: "Minimum Temperature",
+          label: "Orginal",
           fill: false,
           lineTension: .5,
           pointBorderColor: "transparent",
@@ -1229,24 +978,168 @@ setInterval(()=>{
           borderColor: '#d9534f',
           borderWidth: 0,
           showLine: true,
-          data: min_temp_list,
+          data: sequence,
           pointBackgroundColor: 'transparent',
         },{
-          label: "Maximum Temperature",
+          label: "Prediction",
           fill: false,
           lineTension: .5,
           pointColor: "white",
           borderColor: '#5cb85c',
           borderWidth: 0,
           showLine: true,
-          data: max_temp_list,
+          data: lstm,
           pointBackgroundColor: 'transparent',
         }]
       },
     });
-  })
-},10000)
 
+
+
+    
+    var cnn_lstm = document.getElementById('cnn_lstm');
+    var myChart = new Chart(cnn_lstm, {
+      type: 'line',
+      data: {
+        labels: ["Time"],
+        datasets: [{
+          label: "Orginal",
+          fill: false,
+          lineTension: .5,
+          pointBorderColor: "transparent",
+          pointColor: "white",
+          borderColor: '#d9534f',
+          borderWidth: 0,
+          showLine: true,
+          data: sequence,
+          pointBackgroundColor: 'transparent',
+        },{
+          label: "Prediction",
+          fill: false,
+          lineTension: .5,
+          pointColor: "white",
+          borderColor: '#5cb85c',
+          borderWidth: 0,
+          showLine: true,
+          data: cnnlstm,
+          pointBackgroundColor: 'transparent',
+        }]
+      },
+    });
+
+
+
+    
+    var gru_chart = document.getElementById('gru');
+    var myChart = new Chart(gru_chart, {
+      type: 'line',
+      data: {
+        labels: ["Time"],
+        datasets: [{
+          label: "Orginal",
+          fill: false,
+          lineTension: .5,
+          pointBorderColor: "transparent",
+          pointColor: "white",
+          borderColor: '#d9534f',
+          borderWidth: 0,
+          showLine: true,
+          data: sequence,
+          pointBackgroundColor: 'transparent',
+        },{
+          label: "Prediction",
+          fill: false,
+          lineTension: .5,
+          pointColor: "white",
+          borderColor: '#5cb85c',
+          borderWidth: 0,
+          showLine: true,
+          data: gru,
+          pointBackgroundColor: 'transparent',
+        }]
+      },
+    });
+
+
+
+    
+    var cnn_gru = document.getElementById('cnn_gru');
+    var myChart = new Chart(cnn_gru, {
+      type: 'line',
+      data: {
+        labels: ["Time"],
+        datasets: [{
+          label: "Orginal",
+          fill: false,
+          lineTension: .5,
+          pointBorderColor: "transparent",
+          pointColor: "white",
+          borderColor: '#d9534f',
+          borderWidth: 0,
+          showLine: true,
+          data: sequence,
+          pointBackgroundColor: 'transparent',
+        },{
+          label: "Prediction",
+          fill: false,
+          lineTension: .5,
+          pointColor: "white",
+          borderColor: '#5cb85c',
+          borderWidth: 0,
+          showLine: true,
+          data: cnngru,
+          pointBackgroundColor: 'transparent',
+        }]
+      },
+    });
+
+
+
+    
+    var cnn_chart = document.getElementById('cnn');
+    var myChart = new Chart(cnn_chart, {
+      type: 'line',
+      data: {
+        labels: ["Time"],
+        datasets: [{
+          label: "Orginal",
+          fill: false,
+          lineTension: .5,
+          pointBorderColor: "transparent",
+          pointColor: "white",
+          borderColor: '#d9534f',
+          borderWidth: 0,
+          showLine: true,
+          data: sequence,
+          pointBackgroundColor: 'transparent',
+        },{
+          label: "Prediction",
+          fill: false,
+          lineTension: .5,
+          pointColor: "white",
+          borderColor: '#5cb85c',
+          borderWidth: 0,
+          showLine: true,
+          data: cnn,
+          pointBackgroundColor: 'transparent',
+        }]
+      },
+    });
+
+})
+},60000)
+
+
+/*
+setInterval(()=>{
+  getJson().then( data => {
+    min_temp_list = data.min
+    max_temp_list = data.max
+
+  })
+},10000);
+*/
 
 });
+
 </script>
