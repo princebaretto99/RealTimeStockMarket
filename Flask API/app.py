@@ -18,8 +18,8 @@ from alpha_vantage.timeseries import TimeSeries
 def last100values(company):
   company_symbol = 'NSE:'+ company
   ts = TimeSeries(key='XAYE00R4HWQOB5SU', output_format='pandas')
-  data, meta_data = ts.get_intraday(symbol=company_symbol,interval='15min', outputsize='combat')
-  training_set = data.iloc[:, 1:2].values
+  data, meta_data = ts.get_intraday(symbol=company_symbol,interval='15min', outputsize='compact')
+  training_set = data.iloc[:, 0:1].values
   return training_set
 
 def getNewValue(latest_data,name):
@@ -51,10 +51,11 @@ def getNewValue(latest_data,name):
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 
-@app.route("/api/getall/:company")
-def home():
-    company = 'INFY'
-    allModels = ['cnnlstm.h5']
+@app.route("/api/getall/<name>")
+def home(name):
+    company = name
+   
+    allModels = ['cnnlstm.h5','cnngru.h5','GRU.h5','LSTM.h5','cnn.h5']
     allPredictions = []
 
     latest_data = last100values(company)
@@ -66,12 +67,21 @@ def home():
     toSendSeq = latest_data[::-1]
     flat_list = [item for sublist in toSendSeq for item in sublist]
 
-    needed = allPredictions[0][0].tolist()
+    neededCL = allPredictions[0][0].tolist()
+    neededCG = allPredictions[1][0].tolist()
+    neededG = allPredictions[2][0].tolist()
+    neededL = allPredictions[3][0].tolist()
+    neededC = allPredictions[4][0].tolist()
     
     myAll = {   
                 'sequence' : flat_list,
-                'CNNLSTM' : needed[0]
+                'CNNLSTM' : neededCL[0],
+                'CNNGRU' : neededCG[0],
+                'GRU' : neededG[0],
+                'LSTM' : neededL[0],
+                'CNN' : neededC[0]
             }
+
     print(myAll)
 
     return json.dumps(myAll)
