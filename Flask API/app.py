@@ -15,12 +15,18 @@ app=Flask(__name__)
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 from alpha_vantage.timeseries import TimeSeries
-def last100values(company):
-  company_symbol = 'NSE:'+ company
-  ts = TimeSeries(key='XAYE00R4HWQOB5SU', output_format='pandas')
-  data, meta_data = ts.get_intraday(symbol=company_symbol,interval='15min', outputsize='compact')
-  training_set = data.iloc[:, 0:1].values
-  return training_set
+# def last100values(company):
+#     company_symbol = 'NSE:'+ company
+#     ts = TimeSeries(key='XAYE00R4HWQOB5SU', output_format='pandas')
+#     data, meta_data = ts.get_intraday(symbol=company_symbol,interval='15min', outputsize='compact')
+
+#     forDate = data.iloc[:, 0:1]
+#     new_dataset = forDate.reset_index()
+#     dates = new_dataset.iloc[:,0].tolist()
+#     dates = dates[::-1]
+
+#     training_set = data.iloc[:, 0:1].values
+#     return training_set,dates
 
 def getNewValue(latest_data,name):
     model = load_model('WeightFiles/'+name)
@@ -45,6 +51,50 @@ def getNewValue(latest_data,name):
 
 
 
+def getMinDataTo15Data(company):
+    company_symbol = 'NSE:'+ company
+    ts = TimeSeries(key='3IV6H0ADFCU3X5UQ', output_format='pandas')
+    data, meta_data = ts.get_intraday(symbol='NSE:INFY',interval='1min', outputsize='full')
+
+    training_set = data.iloc[:600, 0:1]
+
+    indices=[]
+    for i in range(len(training_set)):
+        if i%15 != 0:
+            indices.append(i)
+
+    new_dataset = training_set.reset_index()
+    made_dataset = new_dataset.drop(indices)
+
+    final_dataset = made_dataset.reset_index()
+    main_dataset = final_dataset.drop('index',axis=1)
+
+    training_set_values = main_dataset.iloc[:,1:2].values
+    dates = main_dataset.iloc[:,0].tolist()
+    stocks = main_dataset.iloc[:,1].tolist()
+
+
+    return dates,stocks,training_set_values
+
+def getDetailedMinData(company):
+    company_symbol = 'NSE:'+ company
+    ts = TimeSeries(key='3IV6H0ADFCU3X5UQ', output_format='pandas')
+    data, meta_data = ts.get_intraday(symbol='NSE:INFY',interval='1min', outputsize='compact')
+
+    training_set = data.iloc[:40, 0:1]
+    new_dataset = training_set.reset_index()
+    made_dataset = new_dataset.drop(indices)
+
+    final_dataset = made_dataset.reset_index()
+    main_dataset = final_dataset.drop('index',axis=1)
+
+    dates = main_dataset.iloc[:,0].tolist()
+    stocks = main_dataset.iloc[:,1].tolist()
+
+    dates = dates[::-1]
+    stocks = stocks[::-1]
+
+    return dates,stocks
 
 
 #--------------------------------------------------------------------------#
@@ -58,28 +108,49 @@ def home(name):
     allModels = ['cnnlstm.h5','cnngru.h5','GRU.h5','LSTM.h5','cnn.h5']
     allPredictions = []
 
-    latest_data = last100values(company)
+    dates, stocks , latest_data = getMinDataTo15Data(company)
+    original15Data = latest_data[0:40][::-1]
 
     for i in allModels:
-        predicted = getNewValue(latest_data,i)
+        predicted, = getNewValue(latest_data,i)
         allPredictions.append(predicted)
 
-    toSendSeq = latest_data[::-1]
-    flat_list = [item for sublist in toSendSeq for item in sublist]
+    flat_list = [item for sublist in original15Data for item in sublist]
 
-    neededCL = allPredictions[0][0].tolist()
-    neededCG = allPredictions[1][0].tolist()
-    neededG = allPredictions[2][0].tolist()
-    neededL = allPredictions[3][0].tolist()
-    neededC = allPredictions[4][0].tolist()
+    neededCL = allPredictions[0][0].tolist()[0]
+    neededCG = allPredictions[1][0].tolist()[0]
+    neededG = allPredictions[2][0].tolist()[0]
+    neededL = allPredictions[3][0].tolist()[0]
+    neededC = allPredictions[4][0].tolist()[0]
+
+    list_CL = flat_list
+    list_CL.append(neededCL)
+
+    list_CG = flat_list
+    list_CG.append(neededCG)
+
+    list_G = flat_list
+    list_G.append(neededG)
+
+    list_L = flat_list
+    list_L.append(neededL)
+
+    list_C = flat_list
+    list_C.append(neededC)
     
+    minDates , minStocks = getDetailedMinData(company)
+
+
     myAll = {   
-                'sequence' : flat_list,
-                'CNNLSTM' : neededCL[0],
-                'CNNGRU' : neededCG[0],
-                'GRU' : neededG[0],
-                'LSTM' : neededL[0],
-                'CNN' : neededC[0]
+                'minDates'  : minDates,#done
+                'minStocks' : minStocks,#done
+                'sequence'  : flat_list,
+                'min15Dates': dates,
+                'CNNLSTM'   : list_CL,#done
+                'CNNGRU'    : list_CG,#done
+                'GRU'       : list_G,#done
+                'LSTM'      : list_L,#done
+                'CNN'       : list_C#done
             }
 
     print(myAll)
