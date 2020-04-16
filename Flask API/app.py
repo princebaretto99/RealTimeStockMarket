@@ -73,8 +73,14 @@ def getMinDataTo15Data(company):
     dates = main_dataset.iloc[:,0].tolist()
     stocks = main_dataset.iloc[:,1].tolist()
 
+    from datetime import datetime
+    string_dates =[]
+    for date in dates: 
+        string_dates.append(date.strftime("%m/%d/%Y, %H:%M"))
+    
 
-    return dates,stocks,training_set_values
+
+    return string_dates,stocks,training_set_values
 
 def getDetailedMinData(company):
     company_symbol = 'NSE:'+ company
@@ -93,10 +99,14 @@ def getDetailedMinData(company):
     dates = main_dataset.iloc[:,0].tolist()
     stocks = main_dataset.iloc[:,1].tolist()
 
-    dates = dates[::-1]
+    string_dates =[]
+    for date in dates: 
+        string_dates.append(date.strftime("%m/%d/%Y, %H:%M"))
+
+    string_dates = string_dates[::-1]
     stocks = stocks[::-1]
 
-    return dates,stocks
+    return string_dates,stocks
 
 
 #--------------------------------------------------------------------------#
