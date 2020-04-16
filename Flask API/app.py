@@ -54,7 +54,7 @@ def getNewValue(latest_data,name):
 def getMinDataTo15Data(company):
     company_symbol = 'NSE:'+ company
     ts = TimeSeries(key='3IV6H0ADFCU3X5UQ', output_format='pandas')
-    data, meta_data = ts.get_intraday(symbol='NSE:INFY',interval='1min', outputsize='full')
+    data, meta_data = ts.get_intraday(symbol=company_symbol,interval='1min', outputsize='full')
 
     training_set = data.iloc[:600, 0:1]
 
@@ -76,7 +76,7 @@ def getMinDataTo15Data(company):
     from datetime import datetime
     string_dates =[]
     for date in dates: 
-        string_dates.append(date.strftime("%m/%d/%Y, %H:%M"))
+        string_dates.append(date.strftime("%m/%d/%Y %H:%M"))
     
 
 
@@ -85,7 +85,7 @@ def getMinDataTo15Data(company):
 def getDetailedMinData(company):
     company_symbol = 'NSE:'+ company
     ts = TimeSeries(key='3IV6H0ADFCU3X5UQ', output_format='pandas')
-    data, meta_data = ts.get_intraday(symbol='NSE:INFY',interval='1min', outputsize='compact')
+    data, meta_data = ts.get_intraday(symbol=company_symbol,interval='1min', outputsize='compact')
 
 
     indices=[]
@@ -101,7 +101,7 @@ def getDetailedMinData(company):
 
     string_dates =[]
     for date in dates: 
-        string_dates.append(date.strftime("%m/%d/%Y, %H:%M"))
+        string_dates.append(date.strftime("%m/%d/%Y %H:%M"))
 
     string_dates = string_dates[::-1]
     stocks = stocks[::-1]
@@ -167,6 +167,44 @@ def home(name):
     print(myAll)
 
     return json.dumps(myAll)
+
+
+
+@app.route("/api/cnn/<name>", methods = ['GET'])
+def cnn(name):
+    company = name
+   
+    allModels = ['cnn.h5']
+    allPredictions = []
+
+    dates, stocks , latest_data = getMinDataTo15Data(company)
+    original15Data = latest_data[0:40][::-1]
+
+    for i in allModels:
+        predicted, = getNewValue(latest_data,i)
+        allPredictions.append(predicted)
+
+    flat_list = [item for sublist in original15Data for item in sublist]
+
+    neededC = allPredictions[0][0].tolist()
+
+    list_C = flat_list
+    list_C.append(neededC)
+    
+    minDates , minStocks = getDetailedMinData(company)
+
+
+    myAll = {   
+                'minDates'  : minDates,#done
+                'minStocks' : minStocks,#done
+                'min15Dates': dates,
+                'CNN'       : list_C#done
+            }
+
+    print(myAll)
+
+    return json.dumps(myAll)
+
 
 
 @app.route("/api/getall", methods = ['GET'])

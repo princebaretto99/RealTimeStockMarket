@@ -131,32 +131,32 @@
   <section class="charts">
     <div class="container-fluid">
 
-          <div class="row">
+          {{!-- <div class="row">
             <div class="col-md-6">
               <div class="chart-container">
                 <h3>LSTM</h3>
-                <canvas id="lstm"></canvas>
+                <div id="lstm"></div>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="chart-container">
                 <h3>Convolutional-LSTM</h3>
-                <canvas id="cnn_lstm"></canvas>
+                <div id="cnn_lstm"></div>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="chart-container">
                 <h3>GRU</h3>
-                <canvas id="gru"></canvas>
+                <div id="gru"></div>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="chart-container">
                 <h3>Convolutional-GRU</h3>
-                <canvas id="cnn_gru"></canvas>
+                <div id="cnn_gru"></div>
               </div>
             </div>
           
@@ -164,14 +164,20 @@
             <div class="col-md-6">
               <div class="chart-container">
                 <h3>Convolutional Neural Network</h3>
-                <canvas id="cnn"></canvas>
+                <div id="cnn"></div>
               </div>
-            </div>
+            </div> --}}
 
         </div>
     </div>
   </section>
 
+
+<div id="lstm"></div>
+<div id="cnn_lstm"></div>
+<div id="gru"></div>
+<div id="cnn_gru"></div>
+<div id="cnn"></div>
 
 
 
@@ -913,6 +919,7 @@ async function getJson(){
 
   if (response.ok) {
     var json = await response.json();
+    console.log(json);
   } else {
     alert("HTTP-Error: " + response.status);
   }
@@ -923,7 +930,9 @@ async function getJson(){
 setInterval(()=>{
   getJson().then( data => {
 
-    var sequence = data["sequence"];
+    var time_1 = data['minDates'];
+    var stock_1 = data['minStocks']
+    var time_15 = data['min15Dates'];
     var lstm = data['LSTM'];
     var cnnlstm = data['CNNLSTM'];
     var gru = data['GRU'];
@@ -942,7 +951,20 @@ setInterval(()=>{
       CNNLSTM.push({ time_15 : time_15[i], value : cnnlstm[i] });
       GRU.push({ time_15 : time_15[i], value : gru[i] });
       CNNGRU.push({ time_15 : time_15[i], value : cnngru[i] });
+      i++;
     }
+
+    var j =0; 
+    while(j<time_1.length){
+      CNN.push({ time_1 : time_1[j], stock_1 : stock_1[j] });
+      LSTM.push({ time_1 : time_1[j], stock_1 : stock_1[j] });
+      CNNLSTM.push({ time_1 : time_1[j], stock_1 : stock_1[j] });
+      GRU.push({ time_1 : time_1[j], stock_1 : stock_1[j] });
+      CNNGRU.push({ time_1 : time_1[j], stock_1 : stock_1[j] });
+      j++;
+    }
+
+    console.log(CNN,LSTM,CNNLSTM,GRU,CNNGRU);
 
     am4core.disposeAllCharts();
     var div_id = ["lstm","cnn_lstm","gru","cnn_gru","cnn"];
@@ -986,8 +1008,8 @@ setInterval(()=>{
         
         var series = chart.series.push(new am4charts.LineSeries());
         series.name = "RealTime Value";
-        series.dataFields.dateX = "date1";
-        series.dataFields.valueY = "price1";
+        series.dataFields.dateX = "time_1";
+        series.dataFields.valueY = "stock_1";
         series.tooltipText = "{valueY.value}";
         series.fill = am4core.color("#e59165");
         series.stroke = am4core.color("#e59165");
@@ -995,8 +1017,8 @@ setInterval(()=>{
         
         var series2 = chart.series.push(new am4charts.LineSeries());
         series2.name = "Predicted Value";
-        series2.dataFields.dateX = "date2";
-        series2.dataFields.valueY = "price2";
+        series2.dataFields.dateX = "time_15";
+        series2.dataFields.valueY = "value";
         series2.yAxis = valueAxis;
         // series2.xAxis = dateAxis2;
         series2.tooltipText = "{valueY.value}";
@@ -1023,7 +1045,7 @@ setInterval(()=>{
       });
     }
   });
-},5000)// end am4core.ready()
+},10000)// end am4core.ready()
 
-
+});
 </script>
