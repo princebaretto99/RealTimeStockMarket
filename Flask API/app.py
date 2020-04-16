@@ -56,12 +56,13 @@ def getMinDataTo15Data(company):
     ts = TimeSeries(key='3IV6H0ADFCU3X5UQ', output_format='pandas')
     data, meta_data = ts.get_intraday(symbol='NSE:INFY',interval='1min', outputsize='full')
 
+    training_set = data.iloc[:600, 0:1]
+
     indices=[]
     for i in range(len(training_set)):
         if i%15 != 0:
             indices.append(i)
 
-    training_set = data.iloc[:600, 0:1]
     new_dataset = training_set.reset_index()
     made_dataset = new_dataset.drop(indices)
 
