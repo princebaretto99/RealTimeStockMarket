@@ -87,6 +87,17 @@ def home(name):
     return json.dumps(myAll)
 
 
+@app.route("/api/getall", methods = ['GET'])
+def abc():
+    myAll = {
+        'sequence' : "list",
+        'CNNLSTM' : 'carol',
+        'CNNGRU' : 123
+    }
+    print(myAll)
+
+    return json.dumps(myAll)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
