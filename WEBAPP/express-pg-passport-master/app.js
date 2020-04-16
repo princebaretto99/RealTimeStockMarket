@@ -8,7 +8,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const multer = require('multer');
-
 const indexRouter = require('./routes/index');
 const dashRouter = require('./routes/dashboard');
 const loginRouter = require('./routes/login');
@@ -50,6 +49,53 @@ app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/register', registerRouter);
 app.use('/dashboard', dashRouter);
+
+
+app.get('/dashboard/lstm', async (req, res) => {
+  const username = req.user.username;
+
+  res.render('lstm', {
+    title: 'Long Short Term Memory',
+    username
+  });
+});
+
+app.get('/dashboard/cnnlstm', async (req, res) => {
+  const username = req.user.username;
+
+  res.render('cnnlstm', {
+    title: 'Convolutional Long Short Term Memory',
+    username
+  });
+});
+
+app.get('/dashboard/gru', async (req, res) => {
+  const username = req.user.username;
+
+  res.render('gru', {
+    title: 'Gated Recurrent Unit',
+    username
+  });
+});
+
+app.get('/dashboard/cnngru', async (req, res) => {
+  const username = req.user.username;
+
+  res.render('cnngru', {
+    title: 'Convolutional Gated Recurrent Unit',
+    username
+  });
+});
+
+app.get('/dashboard/cnn', async (req, res) => {
+  const username = req.user.username;
+
+  res.render('cnn', {
+    title: 'Convolutional Neural Network',
+    username
+  });
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

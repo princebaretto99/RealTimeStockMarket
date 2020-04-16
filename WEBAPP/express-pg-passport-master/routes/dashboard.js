@@ -3,7 +3,7 @@ var router = express.Router();
 
 
 /* GET home page. */
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
 
   const username = req.user.username;
 

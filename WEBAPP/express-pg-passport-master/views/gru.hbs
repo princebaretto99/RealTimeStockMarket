@@ -1,17 +1,6 @@
-  
-<!-- Resources -->
-<script src="https://www.amcharts.com/lib/4/core.js"></script>
-<script src="https://www.amcharts.com/lib/4/charts.js"></script>
-<script src="https://www.amcharts.com/lib/4/themes/dark.js"></script>
-<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
 
 
-
-<div id="lstm"></div>
-<div id="cnn_lstm"></div>
 <div id="gru"></div>
-<div id="cnn_gru"></div>
-<div id="cnn"></div>
 
 
 <!-- Styles -->
@@ -31,7 +20,7 @@
 async function getJson(){
   
   let company = "INFY"
-  let response = await fetch('http://127.0.0.1:5000/api/getall/'+ company);
+  let response = await fetch('http://127.0.0.1:5000/api/gru/'+ company);
 
   if (response.ok) {
     var json = await response.json();
@@ -48,7 +37,7 @@ setInterval(()=>{
 
     var time_1 = data['minDates'];
     var stock_1 = data['minStocks']
-    var cnn = data['CNN'];
+    var cnn = data['GRU'];
     var CNN =[];
 
 
@@ -74,7 +63,7 @@ setInterval(()=>{
 
       
       // Create chart
-      var chart = am4core.create("cnn", am4charts.XYChart);
+      var chart = am4core.create("gru", am4charts.XYChart);
       
       
       chart.data = CNN;
