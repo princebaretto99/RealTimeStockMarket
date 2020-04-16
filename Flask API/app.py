@@ -81,6 +81,8 @@ def getDetailedMinData(company):
     ts = TimeSeries(key='3IV6H0ADFCU3X5UQ', output_format='pandas')
     data, meta_data = ts.get_intraday(symbol='NSE:INFY',interval='1min', outputsize='compact')
 
+
+    indices=[]
     training_set = data.iloc[:40, 0:1]
     new_dataset = training_set.reset_index()
     made_dataset = new_dataset.drop(indices)
@@ -117,11 +119,11 @@ def home(name):
 
     flat_list = [item for sublist in original15Data for item in sublist]
 
-    neededCL = allPredictions[0][0].tolist()[0]
-    neededCG = allPredictions[1][0].tolist()[0]
-    neededG = allPredictions[2][0].tolist()[0]
-    neededL = allPredictions[3][0].tolist()[0]
-    neededC = allPredictions[4][0].tolist()[0]
+    neededCL = allPredictions[0][0].tolist()
+    neededCG = allPredictions[1][0].tolist()
+    neededG = allPredictions[2][0].tolist()
+    neededL = allPredictions[3][0].tolist()
+    neededC = allPredictions[4][0].tolist()
 
     list_CL = flat_list
     list_CL.append(neededCL)
@@ -144,7 +146,6 @@ def home(name):
     myAll = {   
                 'minDates'  : minDates,#done
                 'minStocks' : minStocks,#done
-                'sequence'  : flat_list,
                 'min15Dates': dates,
                 'CNNLSTM'   : list_CL,#done
                 'CNNGRU'    : list_CG,#done
