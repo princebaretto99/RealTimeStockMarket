@@ -206,6 +206,137 @@ def cnn(name):
     return json.dumps(myAll)
 
 
+@app.route("/api/cnnlstm/<name>", methods = ['GET'])
+def cnnlstm(name):
+    company = name
+   
+    allModels = ['cnnlstm.h5']
+    allPredictions = []
+
+    dates, stocks , latest_data = getMinDataTo15Data(company)
+    original15Data = latest_data[0:40][::-1]
+
+    for i in allModels:
+        predicted, = getNewValue(latest_data,i)
+        allPredictions.append(predicted)
+
+    flat_list = [item for sublist in original15Data for item in sublist]
+
+    neededCL = allPredictions[0][0].tolist()
+
+    list_CL = flat_list
+    list_CL.append(neededCL)
+    
+    minDates , minStocks = getDetailedMinData(company)
+
+
+    myAll = {   
+                'minDates'  : minDates,#done
+                'minStocks' : minStocks,#done
+                'min15Dates': dates,
+                'CNNLSTM'   : list_CL#done
+            }
+
+    print(myAll)
+
+    return json.dumps(myAll)
+
+@app.route("/api/cnngru/<name>", methods = ['GET'])
+def cnngru(name):
+    company = name
+   
+    allModels = ['cnngru.h5']
+    allPredictions = []
+
+    dates, stocks , latest_data = getMinDataTo15Data(company)
+    original15Data = latest_data[0:40][::-1]
+
+    for i in allModels:
+        predicted, = getNewValue(latest_data,i)
+        allPredictions.append(predicted)
+
+    flat_list = [item for sublist in original15Data for item in sublist]
+
+    neededCG = allPredictions[0][0].tolist()
+
+    list_CG = flat_list
+    list_CG.append(neededCG)
+    
+    minDates , minStocks = getDetailedMinData(company)
+
+    myAll = {   
+                'minDates'  : minDates,#done
+                'minStocks' : minStocks,#done
+                'min15Dates': dates,
+                'CNNLSTM'   : list_CG#done
+            }
+
+    return json.dumps(myAll)
+
+@app.route("/api/lstm/<name>", methods = ['GET'])
+def lstm(name):
+    company = name
+   
+    allModels = ['LSTM.h5']
+    allPredictions = []
+
+    dates, stocks , latest_data = getMinDataTo15Data(company)
+    original15Data = latest_data[0:40][::-1]
+
+    for i in allModels:
+        predicted, = getNewValue(latest_data,i)
+        allPredictions.append(predicted)
+
+    flat_list = [item for sublist in original15Data for item in sublist]
+
+    neededL = allPredictions[0][0].tolist()
+
+    list_L = flat_list
+    list_L.append(neededL)
+    
+    minDates , minStocks = getDetailedMinData(company)
+
+    myAll = {   
+                'minDates'  : minDates,#done
+                'minStocks' : minStocks,#done
+                'min15Dates': dates,
+                'CNNLSTM'   : list_L#done
+            }
+
+    return json.dumps(myAll)
+
+@app.route("/api/gru/<name>", methods = ['GET'])
+def gru(name):
+    company = name
+   
+    allModels = ['GRU.h5']
+    allPredictions = []
+
+    dates, stocks , latest_data = getMinDataTo15Data(company)
+    original15Data = latest_data[0:40][::-1]
+
+    for i in allModels:
+        predicted, = getNewValue(latest_data,i)
+        allPredictions.append(predicted)
+
+    flat_list = [item for sublist in original15Data for item in sublist]
+
+    neededG = allPredictions[0][0].tolist()
+
+    list_G = flat_list
+    list_G.append(neededG)
+    
+    minDates , minStocks = getDetailedMinData(company)
+
+    myAll = {   
+                'minDates'  : minDates,#done
+                'minStocks' : minStocks,#done
+                'min15Dates': dates,
+                'CNNLSTM'   : list_G#done
+            }
+
+    return json.dumps(myAll)
+
 
 @app.route("/api/getall", methods = ['GET'])
 def abc():
