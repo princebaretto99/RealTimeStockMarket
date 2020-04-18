@@ -1,0 +1,849 @@
+{{!-- <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+  </head>
+  <body>
+      {{{body}}}
+  </body>
+</html> --}}
+
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+      <!-- Resources -->
+    <script src="https://www.amcharts.com/lib/4/core.js"></script>
+    <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/dark.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+  
+  </head>
+  <body>
+    <aside class="side-nav" id="show-side-navigation1">
+      <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i>
+      <div class="heading">
+        <img src="data:image/jpeg;base64,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" alt="">
+        <div class="info">
+          <h3><a href="#">STONKS</a></h3>
+          {{#if username }}
+              <p>{{username}}</p>
+              <h1>{{num}}</h1>
+          {{/if}}
+        </div>
+      </div>
+      <div class="search">
+        <input type="text" placeholder="Type here"><i class="fa fa-search"></i>
+      </div>
+      <ul class="categories">
+        <li><i class="fa fa-home fa-fw" ></i><a href="/dashboard">Home</a></li>
+        <li><i class="fa fa-support fa-fw"></i><a href="#">RealTime Models</a>
+          <ul class="side-nav-dropdown">
+            <li><a href="/dashboard/cnn">CNN</a></li>
+            <li><a href="/dashboard/lstm">LSTM </a></li>
+            <li><a href="/dashboard/cnnlstm">1D + LSTM</a></li>
+            <li><a href="/dashboard/gru">GRU</a></li>
+            <li><a href="/dashboard/cnngru">1D + GRU</a></li>
+          </ul>
+        </li>
+        <li><i class="fa fa-area-chart fa-fw"></i><a href="#"> Analytics</a>
+            <ul class="side-nav-dropdown">
+              <li><a href="/dashboard/cnn">CNN</a></li>
+              <li><a href="/dashboard/lstm">LSTM </a></li>
+              <li><a href="/dashboard/cnnlstm">1D + LSTM</a></li>
+              <li><a href="/dashboard/gru">GRU</a></li>
+              <li><a href="/dashboard/cnngru">1D + GRU</a></li>
+            </ul>
+          </li>
+          <li><i class="fa fa-toggle-off fa-fw"></i><a href="/logout">Logout</a></li>
+      </ul>
+    </aside>
+    <section id="contents">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <i class="fa fa-align-right"></i>
+            </button>
+            <a class="navbar-brand" href="#"><span class="main-color">{{title}}</span></a>
+          </div>
+          <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My profile <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/dasboard"><i class="fa fa-user-o fw"></i> My account</a></li>
+                  <li><a href="#"><i class="fa fa-question-circle-o fw"></i> Help</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="/logout"><i class="fa fa-sign-out"></i> Log out</a></li>
+                </ul>
+              </li>
+              <li><a href="#"><i data-show="show-side-navigation1" class="fa fa-bars show-side-btn"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="welcome">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="content">
+                <h2>Welcome to Dashboard</h2>
+                <p>Lets us help you solve your queries!!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+{{{body}}}
+
+
+
+        <section class='statis text-center'>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="box bg-primary">
+                  <i class="fa fa-eye"></i>
+                  <h3>5,154</h3>
+                  <p class="lead">Page views</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="box danger">
+                  <i class="fa fa-user-o"></i>
+                  <h3>245</h3>
+                  <p class="lead">User registered</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="box warning">
+                  <i class="fa fa-shopping-cart"></i>
+                  <h3>5,154</h3>
+                  <p class="lead">Product sales</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="box success">
+                  <i class="fa fa-handshake-o"></i>
+                  <h3>5,154</h3>
+                  <p class="lead">Transactions</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+       
+      </section>
+
+
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Raleway:200,500,700,800);
+
+.add {
+  background: #111;
+  font-weight: 500;
+  font-size: 1.05em;
+  height: 100%;
+  font-family: 'Raleway', Arial, sans-serif;
+}
+
+#container1 {
+  position: absolute;
+  width: 100%;
+  height: 5em;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #313348;
+  justify-content: center;
+  align-content: center;
+}
+
+.input {
+  position: relative;
+  margin: 1em;
+  width: calc(50% - 2em);
+  height: 80px;
+}
+
+.message {
+  width: calc(100% - 2em);
+  height: 100px;
+}
+
+textarea {
+  border: none;
+  resize: none;
+}
+
+.input__field {
+  position: absolute;
+  margin: 0.8em 0;
+  padding: 0.4em;
+  width: 100%;
+  height: calc(100% - 1.6em);
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: #b09db9;
+  font-size: 1.55em;
+  font-weight: bold;
+  -webkit-appearance: none;/* for box shadows to show on iOS */
+}
+
+.input__field:focus {
+  outline: none;
+}
+
+.input__label {
+  position: absolute;
+  padding: 0 1em;
+  margin: 1.2em 0;
+  width: 100%;
+  height: calc(100% - 2.4em);
+  color: #b09db9;
+  font-weight: bold;
+  font-size: 70.25%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.input__label-content {
+  position: relative;
+  display: block;
+  padding: 1.5em 0;
+  width: 100%;
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+}
+
+.input__label::before,
+.input__label:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #6a7989;
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+}
+
+.input__label::before {
+  top: 0;
+}
+
+.input__label::after {
+  bottom: 0;
+}
+
+.input__field:focus + .input__label .input__label-content,
+.input--filled .input__label-content {
+  -webkit-transform: translate3d(0, -90%, 0);
+  transform: translate3d(0, -90%, 0);
+}
+
+.input__field:focus + .input__label::before,
+.input--filled .input__label::before {
+  -webkit-transform: translate3d(0, -0.5em, 0);
+  transform: translate3d(0, -0.5em, 0);
+}
+
+.input__field:focus + .input__label::after,
+.input--filled .input__label::after {
+  -webkit-transform: translate3d(0, 0.5em, 0);
+  transform: translate3d(0, 0.5em, 0);
+}
+
+#send-button {
+  width: 200px;
+  height: 60px;
+  background-color: #b09db9;
+  color: #000;
+  border: 0;
+  font-weight: bold;
+  font-size: 70.25%;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+}
+
+#send-button:hover,
+#send-button:focus {
+  outline: 0;
+  background-color: #ffcc00;
+  color: #000;
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+}
+
+</style>
+
+      <script src='http://code.jquery.com/jquery-latest.js'></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+      <script src='js/main.js'></script>
+      </body>
+    </html>
+
+<style>
+* {
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: 'Droid Sans', sans-serif;
+  outline: none;
+}
+::-webkit-scrollbar {
+  background: transparent;
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+body {background-color: #2a2b3d}
+#contents {
+  position: relative;
+  transition: .3s;
+  margin-left: 290px;
+  background-color: #2a2b3d;
+}
+.margin {
+  margin-left: 0 !important;
+}
+/* Start side navigation bar  */
+
+.side-nav {
+  float: left;
+  height: 100%;
+  width: 290px;
+  background-color: #252636;
+  color: #CCC;
+  -webkit-transform: translateX(0);
+  -moz-transform: translateX(0);
+  transform: translateX(0);
+  -webkit-transition: all .3s ease-in-out;
+  -moz-transition: all .3s ease-in-out;
+  transition: .3s;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: auto;
+  z-index: 9999999
+}
+.side-nav .close-aside {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  cursor: pointer;
+  color: #EEE;
+}
+.side-nav .heading {
+  background-color: #252636;
+  padding: 15px 15px 15px 30px;
+  overflow: hidden;
+  border-bottom: 1px solid #2a2b3c
+}
+.side-nav .heading > img {
+  border-radius: 50%;
+  float: left;
+  width: 28%;
+}
+.side-nav .info {
+  float: left;
+  width: 69%;
+  margin-left: 3%;
+}
+.side-nav .heading .info > h3 {margin: 0 0 5px}
+.side-nav .heading .info > h3 > a {
+  color: #EEE;
+  font-weight: 100;
+  margin-top: 4px;
+  display: block;
+  text-decoration: none;
+  font-size: 18px;
+}
+.side-nav .heading .info > h3 > a:hover {
+  color: #FFF;
+}
+.side-nav .heading .info > p {
+  color: #BBB;
+  font-size: 13px;
+}
+/* End heading */
+/* Start search */
+.side-nav .search {
+  text-align: center;
+  padding: 15px 30px;
+  margin: 15px 0;
+  position: relative;
+}
+.side-nav .search > input {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #23262d;
+  padding: 7px 0 7px;
+  color: #DDD
+}
+.side-nav .search > input ~ i {
+  position: absolute;
+  top: 22px;
+  right: 40px;
+  display: block;
+  color: #2b2f3a;
+  font-size: 19px;
+}
+/* End search */
+
+.side-nav .categories > li {
+  padding: 17px 40px 17px 30px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+}
+.side-nav .categories > li > a {
+  color: #AAA;
+  text-decoration: none;
+}
+/* Start num: there are three options primary, danger and success like Bootstrap */
+.side-nav .categories > li > a > .num {
+  line-height: 0;
+  border-radius: 3px;
+  font-size: 14px;
+  color: #FFF;
+  padding: 0px 5px
+}
+.dang {background-color: #f35959}
+.prim {background-color: #0275d8}
+.succ {background-color: #5cb85c}
+/* End num */
+.side-nav .categories > li > a:hover {
+  color: #FFF
+}
+.side-nav .categories > li > i {
+  font-size: 18px;
+  margin-right: 5px
+}
+.side-nav .categories > li > a:after {
+  content: "\f053";
+  font-family: fontAwesome;
+  font-size: 11px;
+  line-height: 1.8;
+  float: right;
+  color: #AAA;
+  -webkit-transition: all .3s ease-in-out;
+  -moz-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+}
+.side-nav .categories .opend > a:after {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+/* End categories */
+/* Start dropdown menu */
+.side-nav .categories .side-nav-dropdown {
+  padding-top: 10px;
+  padding-left: 30px;
+  list-style: none;
+  display: none;
+}
+.side-nav .categories .side-nav-dropdown > li > a {
+  color: #AAA;
+  text-decoration: none;
+  padding: 7px 0;
+  display: block;
+}
+.side-nav .categories p {
+  margin-left: 30px;
+  color: #535465;
+  margin-top: 10px;
+}
+
+/* End dropdown menu */
+
+.show-side-nav {
+  -webkit-transform: translateX(-290px);
+  -moz-transform: translateX(-290px);
+  transform: translateX(-290px);
+}
+
+
+/* Start media query */
+@media (max-width: 767px) {
+  .side-nav .categories > li {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .side-nav .search {
+    padding: 10px 0 10px 30px
+  }
+}
+
+/* End side navigation bar  */
+/* Start welcome */
+
+.welcome {
+  color: #CCC;
+}
+.welcome .content {
+  background-color: #313348;
+  padding: 15px;
+  margin-top: 25px;
+}
+.welcome h2 {
+  font-family: Calibri;
+  font-weight: 100;
+  margin-top: 0
+}
+.welcome p {
+  color: #999;
+}
+
+
+/* Start statistics */
+.statistics {
+  margin-top: 25px;
+  color: #CCC;
+}
+.statistics .box {
+  background-color: #313348;
+  padding: 15px;
+  overflow: hidden;
+}
+.statistics .box > i {
+  float: left;
+  color: #FFF;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  font-size: 22px;
+}
+.statistics .box .info {
+  float: left;
+  width: auto;
+  margin-left: 10px;
+}
+.statistics .box .info h3 {
+  margin: 5px 0 5px;
+  display: inline-block;
+}
+.statistics .box .info p {color:#BBB}
+
+/* End statistics */
+/* Start charts */
+.charts {
+  margin-top: 25px;
+  color: #BBB;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.charts .chart-container {
+  width: 100%;
+  height: 500px;
+  background-color: #313348;
+  padding: 15px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.charts .chart-container h3 {
+  margin: 0 0 10px;
+  font-size: 17px;
+}
+
+/* Start users */
+
+.admins {
+  margin-top: 25px;
+}
+.admins .box {
+
+}
+.admins .box > h3 {
+  color: #ccc;
+  font-family: Calibri;
+  font-weight: 300;
+  margin-top: 0;
+}
+.admins .box .admin {
+  margin-bottom: 20px;
+  overflow: hidden;
+  background-color: #313348;
+  padding: 10px;
+}
+.admins .box .admin .img {
+  width: 20%;
+  margin-right: 5%;
+  float: left;
+}
+.admins .box .admin .img img {
+  border-radius: 50%;
+}
+.admins .box .info {
+  width: 75%;
+  color: #EEE;
+  float: left;
+}
+.admins .box .info h3 {font-size: 19px}
+.admins .box .info p {color: #BBB}
+
+/* End users */
+/* Start statis */
+
+.statis {
+  color: #EEE;
+  margin-top: 15px;
+}
+.statis .box {
+  position: relative;
+  padding: 15px;
+  overflow: hidden;
+  border-radius: 3px;
+  margin-bottom: 25px;
+}
+.statis .box h3:after {
+  content: "";
+  height: 2px;
+  width: 70%;
+  margin: auto;
+  background-color: rgba(255, 255, 255, 0.12);
+  display: block;
+  margin-top: 10px;
+}
+.statis .box i {
+  position: absolute;
+  height: 70px;
+  width: 70px;
+  font-size: 22px;
+  padding: 15px;
+  top: -25px;
+  left: -25px;
+  background-color: rgba(255, 255, 255, 0.15);
+  line-height: 60px;
+  text-align: right;
+  border-radius: 50%;
+}
+
+/*chart*/
+.chrt3 {
+  padding-bottom: 50px;
+}
+.chrt3 .chart-container {
+  height: 350px;
+  padding: 15px;
+  margin-top: 25px;
+}
+.chrt3 .box {
+  padding: 15px;
+}
+
+.main-color {
+  color: #ffc107
+}
+.warning {background-color: #f0ad4e}
+.danger {background-color: #d9534f}
+.success {background-color: #5cb85c}
+.inf {background-color: #5bc0de}
+
+/* Start bootstrap */
+.navbar-right .dropdown-menu {
+  right: auto !important;
+  left: 0 !important;
+}
+.navbar-default {
+  background-color: #6f6486 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important
+}
+.navbar-default .navbar-nav>li>a {
+  color: #EEE !important;
+  line-height: 55px !important;
+  padding: 0 10px !important;
+}
+.navbar-default .navbar-brand {color:#FFF !important}
+.navbar-default .navbar-nav>li>a:focus,
+.navbar-default .navbar-nav>li>a:hover {color: #EEE !important}
+
+.navbar-default .navbar-nav>.open>a,
+.navbar-default .navbar-nav>.open>a:focus,
+.navbar-default .navbar-nav>.open>a:hover {background-color: transparent !important; color: #FFF !important}
+
+.navbar-default .navbar-brand {line-height: 55px !important; padding: 0 !important}
+.navbar-default .navbar-brand:focus,
+.navbar-default .navbar-brand:hover {color: #FFF !important}
+.navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {margin: 0 !important}
+@media (max-width: 767px) {
+  .navbar>.container-fluid .navbar-brand {
+    margin-left: 15px !important;
+  }
+  .navbar-default .navbar-nav>li>a {
+    padding-left: 0 !important;
+  }
+  .navbar-nav {
+    margin: 0 !important;
+  }
+  .navbar-default .navbar-collapse,
+  .navbar-default .navbar-form {
+    border: none !important;
+  }
+
+}
+
+.navbar-default .navbar-nav>li>a {
+  float: left !important;
+}
+.navbar-default .navbar-nav>li>a>span:not(.caret) {
+  background-color: #e74c3c !important;
+  border-radius: 50% !important;
+  height: 25px !important;
+  width: 25px !important;
+  padding: 2px !important;
+  font-size: 11px !important;
+  position: relative !important;
+  top: -10px !important;
+  right: 5px !important
+}
+.dropdown-menu>li>a {
+  padding-top: 5px !important;
+  padding-right: 5px !important;
+}
+.navbar-default .navbar-nav>li>a>i {
+  font-size: 18px !important;
+}
+
+
+
+
+/* Start media query */
+
+@media (max-width: 767px) {
+  #contents {
+    margin: 0 !important
+  }
+  .statistics .box {
+    margin-bottom: 25px !important;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu>li>a {
+    color: #CCC !important
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu>li>a:hover {
+    color: #FFF !important
+  }
+  .navbar-default .navbar-toggle{
+    border:none !important;
+    color: #EEE !important;
+    font-size: 18px !important;
+  }
+  .navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {background-color: transparent !important}
+}
+
+</style>
+
+
+<script>
+/*global $, console*/
+/*
+  By Mostafa Omar
+	https://www.facebook.com/MostafaOmarIbrahiem
+*/
+$(function () {
+
+'use strict';
+
+(function () {
+
+  var aside = $('.side-nav'),
+
+      showAsideBtn = $('.show-side-btn'),
+
+      contents = $('#contents');
+
+  showAsideBtn.on("click", function () {
+
+    $("#" + $(this).data('show')).toggleClass('show-side-nav');
+
+    contents.toggleClass('margin');
+
+  });
+
+  if ($(window).width() <= 767) {
+
+    aside.addClass('show-side-nav');
+
+  }
+  $(window).on('resize', function () {
+
+    if ($(window).width() > 767) {
+
+      aside.removeClass('show-side-nav');
+
+    }
+
+  });
+
+  // dropdown menu in the side nav
+  var slideNavDropdown = $('.side-nav-dropdown');
+
+  $('.side-nav .categories li').on('click', function () {
+
+    $(this).toggleClass('opend').siblings().removeClass('opend');
+
+    if ($(this).hasClass('opend')) {
+
+      $(this).find('.side-nav-dropdown').slideToggle('fast');
+
+      $(this).siblings().find('.side-nav-dropdown').slideUp('fast');
+
+    } else {
+
+      $(this).find('.side-nav-dropdown').slideUp('fast');
+
+    }
+
+  });
+
+  $('.side-nav .close-aside').on('click', function () {
+
+    $('#' + $(this).data('close')).addClass('show-side-nav');
+
+    contents.removeClass('margin');
+
+  });
+
+}());
+
+// Start chart
+
+
+
+});
+</script>
