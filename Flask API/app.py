@@ -4,6 +4,7 @@ import numpy as np
 from flask import Flask
 from flask import jsonify
 warnings.filterwarnings("ignore")
+from datetime import datetime, timedelta
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import load_model
 
@@ -15,23 +16,11 @@ app=Flask(__name__)
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
 from alpha_vantage.timeseries import TimeSeries
-# def last100values(company):
-#     company_symbol = 'NSE:'+ company
-#     ts = TimeSeries(key='XAYE00R4HWQOB5SU', output_format='pandas')
-#     data, meta_data = ts.get_intraday(symbol=company_symbol,interval='15min', outputsize='compact')
-
-#     forDate = data.iloc[:, 0:1]
-#     new_dataset = forDate.reset_index()
-#     dates = new_dataset.iloc[:,0].tolist()
-#     dates = dates[::-1]
-
-#     training_set = data.iloc[:, 0:1].values
-#     return training_set,dates
 
 def getNewValue(latest_data,name):
     model = load_model('WeightFiles/'+name)
     
-    xxxx = latest_data[0:40][::-1]
+    xxxx = latest_data[0:60][::-1]
 
     sc = MinMaxScaler(feature_range=(0,1))
     x_scaled = sc.fit_transform(xxxx)
@@ -56,7 +45,7 @@ def getMinDataTo15Data(company):
     ts = TimeSeries(key='3IV6H0ADFCU3X5UQ', output_format='pandas')
     data, meta_data = ts.get_intraday(symbol=company_symbol,interval='1min', outputsize='full')
 
-    training_set = data.iloc[:600, 0:1]
+    training_set = data.iloc[:900, 0:1]
 
     indices=[]
     for i in range(len(training_set)):
@@ -89,7 +78,7 @@ def getDetailedMinData(company):
 
 
     indices=[]
-    training_set = data.iloc[:40, 0:1]
+    training_set = data.iloc[:60, 0:1]
     new_dataset = training_set.reset_index()
     made_dataset = new_dataset.drop(indices)
 
@@ -99,6 +88,9 @@ def getDetailedMinData(company):
     dates = main_dataset.iloc[:,0].tolist()
     stocks = main_dataset.iloc[:,1].tolist()
 
+    nextTime = dates[0] + timedelta(minutes = 15)
+    nextTime = nextTime.strftime("%m/%d/%Y %H:%M")
+
     string_dates =[]
     for date in dates: 
         string_dates.append(date.strftime("%m/%d/%Y %H:%M"))
@@ -106,7 +98,7 @@ def getDetailedMinData(company):
     string_dates = string_dates[::-1]
     stocks = stocks[::-1]
 
-    return string_dates,stocks
+    return string_dates,stocks,nextTime
 
 
 #--------------------------------------------------------------------------#
@@ -121,7 +113,7 @@ def home(name):
     allPredictions = []
 
     dates, stocks , latest_data = getMinDataTo15Data(company)
-    original15Data = latest_data[0:40][::-1]
+    original15Data = latest_data[0:60][::-1]
 
     for i in allModels:
         predicted, = getNewValue(latest_data,i)
@@ -178,7 +170,7 @@ def cnn(name):
     allPredictions = []
 
     dates, stocks , latest_data = getMinDataTo15Data(company)
-    original15Data = latest_data[0:40][::-1]
+    original15Data = latest_data[0:60][::-1]
 
     for i in allModels:
         predicted, = getNewValue(latest_data,i)
@@ -191,14 +183,14 @@ def cnn(name):
     list_C = flat_list
     list_C.append(neededC)
     
-    minDates , minStocks = getDetailedMinData(company)
+    minDates , minStocks , nextTime = getDetailedMinData(company)
 
 
     myAll = {   
                 'minDates'  : minDates,#done
                 'minStocks' : minStocks,#done
-                'min15Dates': dates,
-                'CNN'       : list_C#done
+                'min15Date' : nextTime,
+                'CNN'       : neededC#done
             }
 
     print(myAll)
@@ -214,7 +206,7 @@ def cnnlstm(name):
     allPredictions = []
 
     dates, stocks , latest_data = getMinDataTo15Data(company)
-    original15Data = latest_data[0:40][::-1]
+    original15Data = latest_data[0:60][::-1]
 
     for i in allModels:
         predicted, = getNewValue(latest_data,i)
@@ -227,14 +219,14 @@ def cnnlstm(name):
     list_CL = flat_list
     list_CL.append(neededCL)
     
-    minDates , minStocks = getDetailedMinData(company)
+    minDates , minStocks , nextTime = getDetailedMinData(company)
 
 
     myAll = {   
                 'minDates'  : minDates,#done
                 'minStocks' : minStocks,#done
-                'min15Dates': dates,
-                'CNNLSTM'   : list_CL#done
+                'min15Date': nextTime,
+                'CNNLSTM'   : neededCL#done
             }
 
     print(myAll)
@@ -249,7 +241,7 @@ def cnngru(name):
     allPredictions = []
 
     dates, stocks , latest_data = getMinDataTo15Data(company)
-    original15Data = latest_data[0:40][::-1]
+    original15Data = latest_data[0:60][::-1]
 
     for i in allModels:
         predicted, = getNewValue(latest_data,i)
@@ -262,13 +254,13 @@ def cnngru(name):
     list_CG = flat_list
     list_CG.append(neededCG)
     
-    minDates , minStocks = getDetailedMinData(company)
+    minDates , minStocks , nextTime = getDetailedMinData(company)
 
     myAll = {   
                 'minDates'  : minDates,#done
                 'minStocks' : minStocks,#done
-                'min15Dates': dates,
-                'CNNLSTM'   : list_CG#done
+                'min15Date' : nextTime,
+                'CNNLSTM'   : neededCG#done
             }
 
     return json.dumps(myAll)
@@ -281,7 +273,7 @@ def lstm(name):
     allPredictions = []
 
     dates, stocks , latest_data = getMinDataTo15Data(company)
-    original15Data = latest_data[0:40][::-1]
+    original15Data = latest_data[0:60][::-1]
 
     for i in allModels:
         predicted, = getNewValue(latest_data,i)
@@ -294,13 +286,13 @@ def lstm(name):
     list_L = flat_list
     list_L.append(neededL)
     
-    minDates , minStocks = getDetailedMinData(company)
+    minDates , minStocks , nextTime = getDetailedMinData(company)
 
     myAll = {   
                 'minDates'  : minDates,#done
                 'minStocks' : minStocks,#done
-                'min15Dates': dates,
-                'CNNLSTM'   : list_L#done
+                'min15Date' : nextTime,
+                'CNNLSTM'   : neededL#done
             }
 
     return json.dumps(myAll)
@@ -313,7 +305,7 @@ def gru(name):
     allPredictions = []
 
     dates, stocks , latest_data = getMinDataTo15Data(company)
-    original15Data = latest_data[0:40][::-1]
+    original15Data = latest_data[0:60][::-1]
 
     for i in allModels:
         predicted, = getNewValue(latest_data,i)
@@ -326,13 +318,13 @@ def gru(name):
     list_G = flat_list
     list_G.append(neededG)
     
-    minDates , minStocks = getDetailedMinData(company)
+    minDates , minStocks , nextTime = getDetailedMinData(company)
 
     myAll = {   
                 'minDates'  : minDates,#done
                 'minStocks' : minStocks,#done
-                'min15Dates': dates,
-                'CNNLSTM'   : list_G#done
+                'min15Date' : nextTime,
+                'CNNLSTM'   : neededG#done
             }
 
     return json.dumps(myAll)
