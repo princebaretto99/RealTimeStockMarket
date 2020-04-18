@@ -31,25 +31,177 @@
           </div>
         </div>
       </section> 
- 
-  <section class="charts">
-    <div class="container-fluid">
 
-          <div class="row">
-            <div class="col-md-6">
-              <div class="chart-container">
-                <h3>LSTM</h3>
-                <div id="lstm"></div>
-              </div>
-            </div>
+<div id="gru"></div>
 
-            <div class="col-md-6">
-              <div class="chart-container">
-                <h3>Convolutional-LSTM</h3>
-                <div id="cnn_lstm"></div>
-              </div>
-            </div>
 
-        </div>
-    </div>
-  </section>
+<!-- Styles -->
+<style>
+  body { background-color: #30303d; color: #fff; }
+  #chartdiv {
+    width: 100%;
+    height: 500px;
+  }
+  
+  </style>
+
+
+<script>
+// Start chart
+
+async function getJson(){
+  
+  let company = "INFY"
+  let response = await fetch('http://127.0.0.1:5000/api/'+ company);
+
+  if (response.ok) {
+    var json = await response.json();
+    console.log(json);
+  } else {
+    alert("HTTP-Error: " + response.status);
+  }
+  return json
+}
+
+  getJson().then( data => {
+
+    var time_1 = data['minDates'];
+    var stock_1 = data['minStocks']
+    var CNN =[];
+
+
+    var i =0; 
+    while(i<time_1.length){
+      CNN.push({ time_1 : time_1[i], stock_1 : stock_1[i] });
+      i++;
+    }
+
+    am4core.disposeAllCharts();
+
+    am4core.ready(function() {
+    
+      // Themes begin
+      am4core.useTheme(am4themes_dark);
+      am4core.useTheme(am4themes_animated);
+      // Themes end
+
+      
+      // Create chart
+      var chart = am4core.create("gru", am4charts.XYChart);
+      
+      
+      chart.data = CNN;
+      console.log(CNN);
+      
+      var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+      dateAxis.renderer.grid.template.location = 0;
+      dateAxis.renderer.labels.template.fill = am4core.color("#e59165");
+      
+      var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+      valueAxis.tooltip.disabled = true;
+      valueAxis.renderer.labels.template.fill = am4core.color("#e59165");
+      
+      valueAxis.renderer.minWidth = 60;
+      
+      var series = chart.series.push(new am4charts.LineSeries());
+      series.name = "RealTime Value";
+      series.dataFields.dateX = "time_1";
+      series.dataFields.valueY = "stock_1";
+      series.tooltipText = "{valueY.value}";
+      series.fill = am4core.color("#e59165");
+      series.stroke = am4core.color("#e59165");
+      //series.strokeWidth = 3;
+      
+      chart.cursor = new am4charts.XYCursor();
+      chart.cursor.xAxis = dateAxis;
+      
+      var scrollbarX = new am4charts.XYChartScrollbar();
+      scrollbarX.series.push(series);
+      chart.scrollbarX = scrollbarX;
+      
+      chart.legend = new am4charts.Legend();
+      chart.legend.parent = chart.plotContainer;
+      chart.legend.zIndex = 100;
+      
+      valueAxis2.renderer.grid.template.strokeOpacity = 0.07;
+      dateAxis2.renderer.grid.template.strokeOpacity = 0.07;
+      dateAxis.renderer.grid.template.strokeOpacity = 0.07;
+      valueAxis.renderer.grid.template.strokeOpacity = 0.07;
+    
+    });
+  });
+
+
+
+
+setInterval(()=>{
+  getJson().then( data => {
+
+    var time_1 = data['minDates'];
+    var stock_1 = data['minStocks']
+    var CNN =[];
+
+
+    var i =0; 
+    while(i<time_1.length){
+      CNN.push({ time_1 : time_1[i], stock_1 : stock_1[i] });
+      i++;
+    }
+
+    am4core.disposeAllCharts();
+
+    am4core.ready(function() {
+    
+      // Themes begin
+      am4core.useTheme(am4themes_dark);
+      am4core.useTheme(am4themes_animated);
+      // Themes end
+
+      
+      // Create chart
+      var chart = am4core.create("gru", am4charts.XYChart);
+      
+      
+      chart.data = CNN;
+      console.log(CNN);
+      
+      var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+      dateAxis.renderer.grid.template.location = 0;
+      dateAxis.renderer.labels.template.fill = am4core.color("#e59165");
+      
+      var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+      valueAxis.tooltip.disabled = true;
+      valueAxis.renderer.labels.template.fill = am4core.color("#e59165");
+      
+      valueAxis.renderer.minWidth = 60;
+      
+      var series = chart.series.push(new am4charts.LineSeries());
+      series.name = "RealTime Value";
+      series.dataFields.dateX = "time_1";
+      series.dataFields.valueY = "stock_1";
+      series.tooltipText = "{valueY.value}";
+      series.fill = am4core.color("#e59165");
+      series.stroke = am4core.color("#e59165");
+      //series.strokeWidth = 3;
+      
+      chart.cursor = new am4charts.XYCursor();
+      chart.cursor.xAxis = dateAxis;
+      
+      var scrollbarX = new am4charts.XYChartScrollbar();
+      scrollbarX.series.push(series);
+      chart.scrollbarX = scrollbarX;
+      
+      chart.legend = new am4charts.Legend();
+      chart.legend.parent = chart.plotContainer;
+      chart.legend.zIndex = 100;
+      
+      valueAxis2.renderer.grid.template.strokeOpacity = 0.07;
+      dateAxis2.renderer.grid.template.strokeOpacity = 0.07;
+      dateAxis.renderer.grid.template.strokeOpacity = 0.07;
+      valueAxis.renderer.grid.template.strokeOpacity = 0.07;
+    
+    });
+  });
+},60000)// end am4core.ready()
+
+</script>

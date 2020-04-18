@@ -65,7 +65,7 @@ def getMinDataTo15Data(company):
     from datetime import datetime
     string_dates =[]
     for date in dates: 
-        string_dates.append(date.strftime("%m/%d/%Y %H:%M"))
+        string_dates.append(date.strftime("%m-%d-%Y-%H-%M"))
     
 
 
@@ -89,11 +89,11 @@ def getDetailedMinData(company):
     stocks = main_dataset.iloc[:,1].tolist()
 
     nextTime = dates[0] + timedelta(minutes = 15)
-    nextTime = nextTime.strftime("%m/%d/%Y %H:%M")
+    nextTime = nextTime.strftime("%m-%d-%Y-%H-%M")
 
     string_dates =[]
     for date in dates: 
-        string_dates.append(date.strftime("%m/%d/%Y %H:%M"))
+        string_dates.append(date.strftime("%m-%d-%Y-%H-%M"))
 
     string_dates = string_dates[::-1]
     stocks = stocks[::-1]
@@ -260,7 +260,7 @@ def cnngru(name):
                 'minDates'  : minDates,#done
                 'minStocks' : minStocks,#done
                 'min15Date' : nextTime,
-                'CNNLSTM'   : neededCG#done
+                'CNNGRU'   : neededCG#done
             }
 
     return json.dumps(myAll)
@@ -292,7 +292,7 @@ def lstm(name):
                 'minDates'  : minDates,#done
                 'minStocks' : minStocks,#done
                 'min15Date' : nextTime,
-                'CNNLSTM'   : neededL#done
+                'LSTM'   : neededL#done
             }
 
     return json.dumps(myAll)
@@ -324,19 +324,22 @@ def gru(name):
                 'minDates'  : minDates,#done
                 'minStocks' : minStocks,#done
                 'min15Date' : nextTime,
-                'CNNLSTM'   : neededG#done
+                'GRU'   : neededG#done
             }
 
     return json.dumps(myAll)
 
 
-@app.route("/api/getall", methods = ['GET'])
-def abc():
+@app.route("/api/<name>", methods = ['GET'])
+def abc(name):
+    company = name
+    minDates , minStocks , nextTime = getDetailedMinData(company)
+
     myAll = {
-        'sequence' : "list",
-        'CNNLSTM' : 'carol',
-        'CNNGRU' : 123
-    }
+                'minDates'  : minDates,#done
+                'minStocks' : minStocks,#done
+                'min15Date' : nextTime,
+            }
     print(myAll)
 
     return json.dumps(myAll)

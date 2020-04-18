@@ -14,6 +14,7 @@ const loginRouter = require('./routes/login');
 const logoutRouter = require('./routes/logout');
 const registerRouter = require('./routes/register');
 const dbPool = require('./database');
+const cors = require('cors');
 
 
 const app = express();
@@ -26,6 +27,7 @@ app.set('view engine', 'hbs');
 // var multer = require('multer');
 
 // app.use(multer({dest:'./uploads/'}).single('singleInputFileName'));
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -94,6 +96,25 @@ app.get('/dashboard/cnn', async (req, res) => {
     title: 'Convolutional Neural Network',
     username
   });
+});
+
+
+app.get("/getExcelData", (req, res) => {
+  var workbook = XLSX.readFile(__dirname + "/views/excel/data.xlsx");
+  var sheet_name_list = workbook.SheetNames;
+  var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+  
+  my_json = {   
+    'time_1'  : time_1,
+    'stock_1' : stock_1,
+    'time_15': time_15,
+    'CNNLSTM'   : list_CL,
+    'CNNGRU'    : list_CG,
+    'GRU'       : list_G,
+    'LSTM'      : list_L,
+    'CNN'       : list_C
+}
+  res.json(my_json);
 });
 
 
