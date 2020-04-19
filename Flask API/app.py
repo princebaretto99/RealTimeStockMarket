@@ -3,6 +3,7 @@ import warnings
 import numpy as np
 from flask import Flask
 from flask import jsonify
+from flask_cors import CORS 
 warnings.filterwarnings("ignore")
 from datetime import datetime, timedelta
 from sklearn.preprocessing import MinMaxScaler
@@ -10,7 +11,7 @@ from tensorflow.keras.models import load_model
 
 
 app=Flask(__name__)
-
+CORS(app)
 
 #--------------------------------------------------------------------------#
 #--------------------------------------------------------------------------#
