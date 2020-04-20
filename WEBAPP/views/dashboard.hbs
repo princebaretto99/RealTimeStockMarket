@@ -63,18 +63,22 @@ async function getJson(){
   return json
 }
 
-  getJson().then( data => {
+ getJson().then( data => {
 
     var time_1 = data['minDates'];
-    var stock_1 = data['minStocks']
+    var stock_1 = data['minStocks'];
     var CNN =[];
 
 
     var i =0; 
     while(i<time_1.length){
-      CNN.push({ time_1 : time_1[i], stock_1 : stock_1[i] });
+      var p = time_1[i].split("-");
+      CNN.push({ time_1 : new Date(p[0],p[1],p[2],p[3],p[4]), stock_1 : stock_1[i] });
       i++;
     }
+
+
+    console.log(CNN);
 
     am4core.disposeAllCharts();
 
@@ -94,14 +98,32 @@ async function getJson(){
       console.log(CNN);
       
       var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+      dateAxis.baseInterval = {
+  "timeUnit": "second",
+  "count": 60
+};
       dateAxis.renderer.grid.template.location = 0;
       dateAxis.renderer.labels.template.fill = am4core.color("#e59165");
+      
+      var dateAxis2 = chart.xAxes.push(new am4charts.DateAxis());
+      dateAxis.baseInterval = {
+  "timeUnit": "second",
+  "count": 60
+};
+      dateAxis2.renderer.grid.template.location = 0;
+      dateAxis2.renderer.labels.template.fill = am4core.color("#dfcc64");
       
       var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
       valueAxis.tooltip.disabled = true;
       valueAxis.renderer.labels.template.fill = am4core.color("#e59165");
       
       valueAxis.renderer.minWidth = 60;
+      
+      var valueAxis2 = chart.yAxes.push(new am4charts.ValueAxis());
+      valueAxis2.tooltip.disabled = true;
+      valueAxis2.renderer.labels.template.fill = am4core.color("#dfcc64");
+      valueAxis2.renderer.minWidth = 60;
+      valueAxis2.syncWithAxis = valueAxis;
       
       var series = chart.series.push(new am4charts.LineSeries());
       series.name = "RealTime Value";
@@ -130,23 +152,28 @@ async function getJson(){
     
     });
   });
-
-
-
 
 setInterval(()=>{
-  getJson().then( data => {
+    getJson().then( data => {
 
     var time_1 = data['minDates'];
-    var stock_1 = data['minStocks']
+    var stock_1 = data['minStocks'];
     var CNN =[];
 
 
     var i =0; 
     while(i<time_1.length){
-      CNN.push({ time_1 : time_1[i], stock_1 : stock_1[i] });
+      var p = time_1[i].split("-");
+      CNN.push({ time_1 : new Date(p[0],p[1],p[2],p[3],p[4]), stock_1 : stock_1[i] });
       i++;
     }
+    var p = time_1[time_1.length-1].split("-");
+    CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), value : stock_1[time_1.length-1] });
+    var p = time_15.split("-");
+    CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), value : cnn });
+
+
+    console.log(CNN);
 
     am4core.disposeAllCharts();
 
@@ -166,14 +193,32 @@ setInterval(()=>{
       console.log(CNN);
       
       var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+      dateAxis.baseInterval = {
+  "timeUnit": "second",
+  "count": 60
+};
       dateAxis.renderer.grid.template.location = 0;
       dateAxis.renderer.labels.template.fill = am4core.color("#e59165");
+      
+      var dateAxis2 = chart.xAxes.push(new am4charts.DateAxis());
+      dateAxis.baseInterval = {
+  "timeUnit": "second",
+  "count": 60
+};
+      dateAxis2.renderer.grid.template.location = 0;
+      dateAxis2.renderer.labels.template.fill = am4core.color("#dfcc64");
       
       var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
       valueAxis.tooltip.disabled = true;
       valueAxis.renderer.labels.template.fill = am4core.color("#e59165");
       
       valueAxis.renderer.minWidth = 60;
+      
+      var valueAxis2 = chart.yAxes.push(new am4charts.ValueAxis());
+      valueAxis2.tooltip.disabled = true;
+      valueAxis2.renderer.labels.template.fill = am4core.color("#dfcc64");
+      valueAxis2.renderer.minWidth = 60;
+      valueAxis2.syncWithAxis = valueAxis;
       
       var series = chart.series.push(new am4charts.LineSeries());
       series.name = "RealTime Value";
@@ -183,6 +228,7 @@ setInterval(()=>{
       series.fill = am4core.color("#e59165");
       series.stroke = am4core.color("#e59165");
       //series.strokeWidth = 3;
+      
       
       chart.cursor = new am4charts.XYCursor();
       chart.cursor.xAxis = dateAxis;
@@ -201,7 +247,7 @@ setInterval(()=>{
       valueAxis.renderer.grid.template.strokeOpacity = 0.07;
     
     });
-  });
+  }); 
 },60000)// end am4core.ready()
 
 </script>

@@ -53,6 +53,15 @@ app.use('/register', registerRouter);
 app.use('/dashboard', dashRouter);
 
 
+app.get('/analysis', async (req, res) => {
+  const username = req.user.username;
+
+  res.render('getall', {
+    title: 'Analysis Of The Models',
+    username
+  });
+});
+
 app.get('/dashboard/lstm', async (req, res) => {
   const username = req.user.username;
 

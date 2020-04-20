@@ -1,0 +1,366 @@
+
+
+<div id="cnn"></div>
+
+
+<!-- Styles -->
+<style>
+  body { background-color: #30303d; color: #fff; }
+  #chartdiv {
+    width: 100%;
+    height: 500px;
+  }
+  
+  </style>
+
+
+<script>
+// Start chart
+
+async function getJson(){
+  
+  let company = "INFY"
+  let response = await fetch('http://127.0.0.1:5000/api/getall/'+ company);
+
+  if (response.ok) {
+    var json = await response.json();
+    console.log(json);
+  } else {
+    alert("HTTP-Error: " + response.status);
+  }
+  return json
+}
+
+
+  getJson().then( data => {
+
+    var time_1 = data['minDates'];
+    var stock_1 = data['minStocks'];
+    var time_15 = data['min15Dates']
+    var cnn = data['CNN'];
+    var gru = data['GRU'];
+    var cnngru = data['CNNGRU'];
+    var lstm = data['LSTM'];
+    var cnnlstm = data['CNNLSTM'];
+    var CNN =[];
+
+
+    var i =0; 
+    while(i<time_1.length){
+      var p = time_1[i].split("-");
+      CNN.push({ time_1 : new Date(p[0],p[1],p[2],p[3],p[4]), stock_1 : stock_1[i] });
+      i++;
+    }
+    var p = time_1[time_1.length-1].split("-");
+    CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), cnn : stock_1[time_1.length-1] });
+    var r = time_15.split("-");
+    CNN.push({ time_15 : new Date(r[0],r[1],r[2],r[3],r[4]), cnn : cnn });
+
+    CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), gru : stock_1[time_1.length-1] });
+    CNN.push({ time_15 : new Date(r[0],r[1],r[2],r[3],r[4]), gru : gru });
+
+    CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), lstm : stock_1[time_1.length-1] });
+    CNN.push({ time_15 : new Date(r[0],r[1],r[2],r[3],r[4]), lstm : lstm });
+
+    CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), cnngru : stock_1[time_1.length-1] });
+    CNN.push({ time_15 : new Date(r[0],r[1],r[2],r[3],r[4]), cnngru : cnngru });
+
+    CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), cnnlstm : stock_1[time_1.length-1] });
+    CNN.push({ time_15 : new Date(r[0],r[1],r[2],r[3],r[4]), cnnlstm : cnnlstm });
+
+
+    console.log(CNN);
+
+    am4core.disposeAllCharts();
+
+    am4core.ready(function() {
+    
+      // Themes begin
+      am4core.useTheme(am4themes_dark);
+      am4core.useTheme(am4themes_animated);
+      // Themes end
+
+      
+      // Create chart
+      var chart = am4core.create("cnn", am4charts.XYChart);
+      
+      
+      chart.data = CNN;
+      console.log(CNN);
+      
+      var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+      dateAxis.baseInterval = {
+  "timeUnit": "second",
+  "count": 60
+};
+      dateAxis.renderer.grid.template.location = 0;
+      dateAxis.renderer.labels.template.fill = am4core.color("#e59165");
+      
+      var dateAxis2 = chart.xAxes.push(new am4charts.DateAxis());
+      dateAxis.baseInterval = {
+  "timeUnit": "second",
+  "count": 60
+};
+      dateAxis2.renderer.grid.template.location = 0;
+      dateAxis2.renderer.labels.template.fill = am4core.color("#dfcc64");
+      
+      var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+      valueAxis.tooltip.disabled = true;
+      valueAxis.renderer.labels.template.fill = am4core.color("#e59165");
+      
+      valueAxis.renderer.minWidth = 60;
+      
+      var valueAxis2 = chart.yAxes.push(new am4charts.ValueAxis());
+      valueAxis2.tooltip.disabled = true;
+      valueAxis2.renderer.labels.template.fill = am4core.color("#dfcc64");
+      valueAxis2.renderer.minWidth = 60;
+      valueAxis2.syncWithAxis = valueAxis;
+      
+      var series = chart.series.push(new am4charts.LineSeries());
+      series.name = "RealTime Value";
+      series.dataFields.dateX = "time_1";
+      series.dataFields.valueY = "stock_1";
+      series.tooltipText = "{valueY.value}";
+      series.fill = am4core.color("#e59165");
+      series.stroke = am4core.color("#e59165");
+      //series.strokeWidth = 3;
+      
+      var series2 = chart.series.push(new am4charts.LineSeries());
+      series2.name = "CNN";
+      series2.dataFields.dateX = "time_15";
+      series2.dataFields.valueY = "cnn";
+      series2.yAxis = valueAxis;
+      // series2.xAxis = dateAxis2;
+      series2.tooltipText = "{valueY.value}";
+      series2.fill = am4core.color("#64df78");
+      series2.stroke = am4core.color("#64df78");
+      //series2.strokeWidth = 3;
+
+      var series3 = chart.series.push(new am4charts.LineSeries());
+      series3.name = "LSTM";
+      series3.dataFields.dateX = "time_15";
+      series3.dataFields.valueY = "lstm";
+      series3.yAxis = valueAxis;
+      // series3.xAxis = dateAxis2;
+      series3.tooltipText = "{valueY.value}";
+      series3.fill = am4core.color("#FF6347");
+      series3.stroke = am4core.color("#FF6347");
+
+      var series4 = chart.series.push(new am4charts.LineSeries());
+      series4.name = "GRU";
+      series4.dataFields.dateX = "time_15";
+      series4.dataFields.valueY = "gru";
+      series4.yAxis = valueAxis;
+      // series4.xAxis = dateAxis2;
+      series4.tooltipText = "{valueY.value}";
+      series4.fill = am4core.color("#FFFF00");
+      series4.stroke = am4core.color("#FFFF00");
+
+
+      var series5 = chart.series.push(new am4charts.LineSeries());
+      series5.name = "1d+GRU";
+      series5.dataFields.dateX = "time_15";
+      series5.dataFields.valueY = "cnngru";
+      series5.yAxis = valueAxis;
+      // series5.xAxis = dateAxis2;
+      series5.tooltipText = "{valueY.value}";
+      series5.fill = am4core.color("#7B68EE");
+      series5.stroke = am4core.color("#7B68EE");
+
+      var series6 = chart.series.push(new am4charts.LineSeries());
+      series6.name = "1d+LSTM";
+      series6.dataFields.dateX = "time_15";
+      series6.dataFields.valueY = "cnnlstm";
+      series6.yAxis = valueAxis;
+      // series6.xAxis = dateAxis2;
+      series6.tooltipText = "{valueY.value}";
+      series6.fill = am4core.color("#FF69B4");
+      series6.stroke = am4core.color("#FF69B4");
+      
+      chart.cursor = new am4charts.XYCursor();
+      chart.cursor.xAxis = dateAxis;
+      
+      var scrollbarX = new am4charts.XYChartScrollbar();
+      scrollbarX.series.push(series);
+      chart.scrollbarX = scrollbarX;
+      
+      chart.legend = new am4charts.Legend();
+      chart.legend.parent = chart.plotContainer;
+      chart.legend.zIndex = 100;
+      
+      valueAxis2.renderer.grid.template.strokeOpacity = 0.07;
+      dateAxis2.renderer.grid.template.strokeOpacity = 0.07;
+      dateAxis.renderer.grid.template.strokeOpacity = 0.07;
+      valueAxis.renderer.grid.template.strokeOpacity = 0.07;
+    
+    });
+  });
+
+
+setInterval(()=>{
+  getJson().then( data => {
+
+    var time_1 = data['minDates'];
+    var stock_1 = data['minStocks'];
+    var time_15 = data['min15Dates']
+    var cnn = data['CNN'];
+    var gru = data['GRU'];
+    var cnngru = data['CNNGRU'];
+    var lstm = data['LSTM'];
+    var cnnlstm = data['CNNLSTM'];
+    var CNN =[];
+
+
+    var i =0; 
+    while(i<time_1.length){
+      var p = time_1[i].split("-");
+      CNN.push({ time_1 : new Date(p[0],p[1],p[2],p[3],p[4]), stock_1 : stock_1[i] });
+      i++;
+    }
+    var p = time_1[time_1.length-1].split("-");
+    CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), cnn : stock_1[time_1.length-1] });
+    var r = time_15.split("-");
+    CNN.push({ time_15 : new Date(r[0],r[1],r[2],r[3],r[4]), cnn : cnn });
+
+    CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), gru : stock_1[time_1.length-1] });
+    CNN.push({ time_15 : new Date(r[0],r[1],r[2],r[3],r[4]), gru : gru });
+
+    CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), lstm : stock_1[time_1.length-1] });
+    CNN.push({ time_15 : new Date(r[0],r[1],r[2],r[3],r[4]), lstm : lstm });
+
+    CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), cnngru : stock_1[time_1.length-1] });
+    CNN.push({ time_15 : new Date(r[0],r[1],r[2],r[3],r[4]), cnngru : cnngru });
+
+    CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), cnnlstm : stock_1[time_1.length-1] });
+    CNN.push({ time_15 : new Date(r[0],r[1],r[2],r[3],r[4]), cnnlstm : cnnlstm });
+
+
+    console.log(CNN);
+
+    am4core.disposeAllCharts();
+
+    am4core.ready(function() {
+    
+      // Themes begin
+      am4core.useTheme(am4themes_dark);
+      am4core.useTheme(am4themes_animated);
+      // Themes end
+
+      
+      // Create chart
+      var chart = am4core.create("cnn", am4charts.XYChart);
+      
+      
+      chart.data = CNN;
+      console.log(CNN);
+      
+      var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+      dateAxis.baseInterval = {
+  "timeUnit": "second",
+  "count": 60
+};
+      dateAxis.renderer.grid.template.location = 0;
+      dateAxis.renderer.labels.template.fill = am4core.color("#e59165");
+      
+      var dateAxis2 = chart.xAxes.push(new am4charts.DateAxis());
+      dateAxis.baseInterval = {
+  "timeUnit": "second",
+  "count": 60
+};
+      dateAxis2.renderer.grid.template.location = 0;
+      dateAxis2.renderer.labels.template.fill = am4core.color("#dfcc64");
+      
+      var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+      valueAxis.tooltip.disabled = true;
+      valueAxis.renderer.labels.template.fill = am4core.color("#e59165");
+      
+      valueAxis.renderer.minWidth = 60;
+      
+      var valueAxis2 = chart.yAxes.push(new am4charts.ValueAxis());
+      valueAxis2.tooltip.disabled = true;
+      valueAxis2.renderer.labels.template.fill = am4core.color("#dfcc64");
+      valueAxis2.renderer.minWidth = 60;
+      valueAxis2.syncWithAxis = valueAxis;
+      
+      var series = chart.series.push(new am4charts.LineSeries());
+      series.name = "RealTime Value";
+      series.dataFields.dateX = "time_1";
+      series.dataFields.valueY = "stock_1";
+      series.tooltipText = "{valueY.value}";
+      series.fill = am4core.color("#e59165");
+      series.stroke = am4core.color("#e59165");
+      //series.strokeWidth = 3;
+      
+      var series2 = chart.series.push(new am4charts.LineSeries());
+      series2.name = "CNN";
+      series2.dataFields.dateX = "time_15";
+      series2.dataFields.valueY = "cnn";
+      series2.yAxis = valueAxis;
+      // series2.xAxis = dateAxis2;
+      series2.tooltipText = "{valueY.value}";
+      series2.fill = am4core.color("#64df78");
+      series2.stroke = am4core.color("#64df78");
+      //series2.strokeWidth = 3;
+
+      var series3 = chart.series.push(new am4charts.LineSeries());
+      series3.name = "LSTM";
+      series3.dataFields.dateX = "time_15";
+      series3.dataFields.valueY = "lstm";
+      series3.yAxis = valueAxis;
+      // series3.xAxis = dateAxis2;
+      series3.tooltipText = "{valueY.value}";
+      series3.fill = am4core.color("#FF6347");
+      series3.stroke = am4core.color("#FF6347");
+
+      var series4 = chart.series.push(new am4charts.LineSeries());
+      series4.name = "GRU";
+      series4.dataFields.dateX = "time_15";
+      series4.dataFields.valueY = "gru";
+      series4.yAxis = valueAxis;
+      // series4.xAxis = dateAxis2;
+      series4.tooltipText = "{valueY.value}";
+      series4.fill = am4core.color("#FFFF00");
+      series4.stroke = am4core.color("#FFFF00");
+
+
+      var series5 = chart.series.push(new am4charts.LineSeries());
+      series5.name = "1d+GRU";
+      series5.dataFields.dateX = "time_15";
+      series5.dataFields.valueY = "cnngru";
+      series5.yAxis = valueAxis;
+      // series5.xAxis = dateAxis2;
+      series5.tooltipText = "{valueY.value}";
+      series5.fill = am4core.color("#7B68EE");
+      series5.stroke = am4core.color("#7B68EE");
+
+      var series6 = chart.series.push(new am4charts.LineSeries());
+      series6.name = "1d+LSTM";
+      series6.dataFields.dateX = "time_15";
+      series6.dataFields.valueY = "cnnlstm";
+      series6.yAxis = valueAxis;
+      // series6.xAxis = dateAxis2;
+      series6.tooltipText = "{valueY.value}";
+      series6.fill = am4core.color("#FF69B4");
+      series6.stroke = am4core.color("#FF69B4");
+      
+      chart.cursor = new am4charts.XYCursor();
+      chart.cursor.xAxis = dateAxis;
+      
+      var scrollbarX = new am4charts.XYChartScrollbar();
+      scrollbarX.series.push(series);
+      chart.scrollbarX = scrollbarX;
+      
+      chart.legend = new am4charts.Legend();
+      chart.legend.parent = chart.plotContainer;
+      chart.legend.zIndex = 100;
+      
+      valueAxis2.renderer.grid.template.strokeOpacity = 0.07;
+      dateAxis2.renderer.grid.template.strokeOpacity = 0.07;
+      dateAxis.renderer.grid.template.strokeOpacity = 0.07;
+      valueAxis.renderer.grid.template.strokeOpacity = 0.07;
+    
+    });
+  });
+},60000)// end am4core.ready()
+
+</script>

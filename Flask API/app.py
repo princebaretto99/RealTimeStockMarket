@@ -143,18 +143,18 @@ def home(name):
     list_C = flat_list
     list_C.append(neededC)
     
-    minDates , minStocks = getDetailedMinData(company)
+    minDates , minStocks , nextTime = getDetailedMinData(company)
 
 
     myAll = {   
                 'minDates'  : minDates,#done
                 'minStocks' : minStocks,#done
-                'min15Dates': dates,
-                'CNNLSTM'   : list_CL,#done
-                'CNNGRU'    : list_CG,#done
-                'GRU'       : list_G,#done
-                'LSTM'      : list_L,#done
-                'CNN'       : list_C#done
+                'min15Dates': nextTime,
+                'CNNLSTM'   : neededCL,#done
+                'CNNGRU'    : neededCG,#done
+                'GRU'       : neededG,#done
+                'LSTM'      : neededL,#done
+                'CNN'       : neededC#done
             }
 
     print(myAll)
