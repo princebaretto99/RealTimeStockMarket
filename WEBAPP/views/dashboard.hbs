@@ -52,7 +52,7 @@
 async function getJson(){
   
   let company = "INFY"
-  let response = await fetch('https://167.71.230.221:5000/api/'+ company);
+  let response = await fetch('http://167.71.230.221:5000/api/'+ company);
 
   if (response.ok) {
     var json = await response.json();

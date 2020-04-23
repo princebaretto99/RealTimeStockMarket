@@ -1,8 +1,8 @@
 module.exports = {
-  host: "localhost",
+  host: "stocks-main-db.csztviryeyjm.ap-south-1.rds.amazonaws.com",
   user: "postgres",
-  database: "nodeJS",
+  database: "postgres",
   // password: "Prince@99",
-  password: "123456",
+  password: "Stocks-123",
   port: "5432",
 }

@@ -1,19 +1,19 @@
 const createError = require('http-errors');
 const express = require('express');
-const session = require('express-session');
-const pgSession = require('connect-pg-simple')(session);
-const passport = require('passport');
-require('./config/pass')(passport);
+// const session = require('express-session');
+// const pgSession = require('connect-pg-simple')(session);
+// const passport = require('passport');
+// require('./config/pass')(passport);
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const multer = require('multer');
 const indexRouter = require('./routes/index');
 const dashRouter = require('./routes/dashboard');
-const loginRouter = require('./routes/login');
-const logoutRouter = require('./routes/logout');
-const registerRouter = require('./routes/register');
-const dbPool = require('./database');
+// const loginRouter = require('./routes/login');
+// const logoutRouter = require('./routes/logout');
+// const registerRouter = require('./routes/register');
+// const dbPool = require('./database');
 const cors = require('cors');
 
 
@@ -33,77 +33,77 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-  store: new pgSession({
-    pool: dbPool,
-    tableName: 'session',
-  }),
-  secret: "mysecret",
-  resave: false,
-  saveUninitialized: true,
-  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(session({
+//   store: new pgSession({
+//     pool: dbPool,
+//     tableName: 'session',
+//   }),
+//   secret: "mysecret",
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
+// }));
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.use('/', indexRouter);
-app.use('/login', loginRouter);
-app.use('/logout', logoutRouter);
-app.use('/register', registerRouter);
+// app.use('/login', loginRouter);
+// app.use('/logout', logoutRouter);
+// app.use('/register', registerRouter);
 app.use('/dashboard', dashRouter);
 
 
 app.get('/analysis', async (req, res) => {
-  const username = req.user.username;
+  // const username = req.user.username;
 
   res.render('getall', {
     title: 'Analysis Of The Models',
-    username
+    // username
   });
 });
 
 app.get('/dashboard/lstm', async (req, res) => {
-  const username = req.user.username;
+  // const username = req.user.username;
 
   res.render('lstm', {
     title: 'Long Short Term Memory',
-    username
+    // username
   });
 });
 
 app.get('/dashboard/cnnlstm', async (req, res) => {
-  const username = req.user.username;
+  // const username = req.user.username;
 
   res.render('cnnlstm', {
     title: 'Convolutional Long Short Term Memory',
-    username
+    // username
   });
 });
 
 app.get('/dashboard/gru', async (req, res) => {
-  const username = req.user.username;
+  // const username = req.user.username;
 
   res.render('gru', {
     title: 'Gated Recurrent Unit',
-    username
+    // username
   });
 });
 
 app.get('/dashboard/cnngru', async (req, res) => {
-  const username = req.user.username;
+  // const username = req.user.username;
 
   res.render('cnngru', {
     title: 'Convolutional Gated Recurrent Unit',
-    username
+    // username
   });
 });
 
 app.get('/dashboard/cnn', async (req, res) => {
-  const username = req.user.username;
+  // const username = req.user.username;
 
   res.render('cnn', {
     title: 'Convolutional Neural Network',
-    username
+    // username
   });
 });
 

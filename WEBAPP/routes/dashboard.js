@@ -5,12 +5,12 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', async (req, res, next) => {
 
-  const username = req.user.username;
+  // const username = req.user.username;
 
 
   res.render('dashboard', {
-    title: 'Welcome '+username+"!!",
-    username
+    title: 'Welcome',
+    // username
   });
 });
 
