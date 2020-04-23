@@ -20,7 +20,7 @@
 async function getJson(){
   
   let company = "INFY"
-  let response = await fetch('https://flask-stonks.herokuapp.com/api/getall/'+ company);
+  let response = await fetch('https://167.71.230.221:5000/api/getall/'+ company);
 
   if (response.ok) {
     var json = await response.json();
