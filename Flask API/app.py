@@ -171,6 +171,43 @@ def cnn(name):
     allPredictions = []
 
     dates, stocks , latest_data = getMinDataTo15Data(company)
+    c1Real = latest_data[0]
+    c2Real = latest_data[1]
+    data_for_one = latest_data[1:61]
+    data_for_two = latest_data[2:62]
+
+    testing_models = ['cnnlstm.h5','lstm.h5']
+
+    cnnlstm_prediction = []
+    lstm_prediction = []
+
+    cnnlstm_predicted_one = getNewValue(data_for_one,testing_models[0])[0].tolist()[0] #cnnlstm----1
+    cnnlstm_predicted_two = getNewValue(data_for_two,testing_models[0])[0].tolist()[0] #cnnlstm----2
+
+    lstm_predicted_one = getNewValue(data_for_one,testing_models[1])[0].tolist()[0] #lstm----1
+    lstm_predicted_two = getNewValue(data_for_two,testing_models[1])[0].tolist()[0] #lstm----2
+
+    #cnnlstm_1*x + lstm_1*y  = c1Real
+    #cnnlstm_2*x + lstm_2*y  = c2Real
+
+    X = np.array([ [cnnlstm_predicted_one,lstm_predicted_one],
+                   [cnnlstm_predicted_two,lstm_predicted_two] ])
+
+    Y = np.array( [ [c1Real,c2Real] ] )
+
+    solved_array = np.linalg.solve(X,Y)
+
+
+    cnnlstm_weight = solved_array[0]
+    lstm_weight = solved_array[1]
+
+    #predicting cnnlstm
+    cnnlstm_answer = getNewValue(latest_data,'cnnlstm.h5')
+    lstm_answer = getNewValue(latest_data,'lstm.h5')
+
+    true_value = []
+    true_value.append(   ( (lstm_weight)*(lstm_answer[0].tolist()[0]) + (cnnlstm_weight)*(cnnlstm_answer[0].tolist()[0]) )    )
+
     original15Data = latest_data[0:60][::-1]
 
     for i in allModels:
@@ -191,7 +228,7 @@ def cnn(name):
                 'minDates'  : minDates,#done
                 'minStocks' : minStocks,#done
                 'min15Date' : nextTime,
-                'CNN'       : neededC#done
+                'CNN'       : neededC#done  #put true_value
             }
 
     print(myAll)
