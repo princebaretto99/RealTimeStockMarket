@@ -42,6 +42,8 @@ async function getJson(){
     var cnngru = data['CNNGRU'];
     var lstm = data['LSTM'];
     var cnnlstm = data['CNNLSTM'];
+    var max_value = math.max(cnn,cnnlstm);
+    var optimum = 2*(2*optimum-(cnn + cnnlstm))
     var CNN =[];
 
 
@@ -67,6 +69,9 @@ async function getJson(){
 
     CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), cnnlstm : stock_1[time_1.length-1] });
     CNN.push({ time_15 : new Date(r[0],r[1],r[2],r[3],r[4]), cnnlstm : cnnlstm });
+
+    CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), optimum : stock_1[time_1.length-1] });
+    CNN.push({ time_15 : new Date(r[0],r[1],r[2],r[3],r[4]), optimum : optimum });
 
 
     console.log(CNN);
@@ -176,6 +181,16 @@ async function getJson(){
       series6.tooltipText = "{valueY.value}";
       series6.fill = am4core.color("#FF69B4");
       series6.stroke = am4core.color("#FF69B4");
+
+      var series7 = chart.series.push(new am4charts.LineSeries());
+      series5.name = "Optimum";
+      series5.dataFields.dateX = "time_15";
+      series5.dataFields.valueY = "optimum";
+      series5.yAxis = valueAxis;
+      // series5.xAxis = dateAxis2;
+      series5.tooltipText = "{valueY.value}";
+      series5.fill = am4core.color("#fff");
+      series5.stroke = am4core.color("#fff");
       
       chart.cursor = new am4charts.XYCursor();
       chart.cursor.xAxis = dateAxis;
@@ -208,6 +223,8 @@ setInterval(()=>{
     var cnngru = data['CNNGRU'];
     var lstm = data['LSTM'];
     var cnnlstm = data['CNNLSTM'];
+    var max_value = math.max(cnn,cnnlstm);
+    var optimum = 2*(2*optimum-(cnn + cnnlstm))
     var CNN =[];
 
 
@@ -233,6 +250,9 @@ setInterval(()=>{
 
     CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), cnnlstm : stock_1[time_1.length-1] });
     CNN.push({ time_15 : new Date(r[0],r[1],r[2],r[3],r[4]), cnnlstm : cnnlstm });
+
+    CNN.push({ time_15 : new Date(p[0],p[1],p[2],p[3],p[4]), optimum : stock_1[time_1.length-1] });
+    CNN.push({ time_15 : new Date(r[0],r[1],r[2],r[3],r[4]), optimum : optimum });
 
 
     console.log(CNN);
@@ -342,6 +362,16 @@ setInterval(()=>{
       series6.tooltipText = "{valueY.value}";
       series6.fill = am4core.color("#FF69B4");
       series6.stroke = am4core.color("#FF69B4");
+
+      var series7 = chart.series.push(new am4charts.LineSeries());
+      series5.name = "Optimum";
+      series5.dataFields.dateX = "time_15";
+      series5.dataFields.valueY = "optimum";
+      series5.yAxis = valueAxis;
+      // series5.xAxis = dateAxis2;
+      series5.tooltipText = "{valueY.value}";
+      series5.fill = am4core.color("#fff");
+      series5.stroke = am4core.color("#fff");
       
       chart.cursor = new am4charts.XYCursor();
       chart.cursor.xAxis = dateAxis;
