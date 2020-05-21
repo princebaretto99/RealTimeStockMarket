@@ -1,4 +1,4 @@
-# Express, Passport, PostgreSQL login boilerplate
+# Express, Passport, PostgreSQL 
 
 ## Usage
 Create Postgres database and create user and session [tables](database/tables.sql)
