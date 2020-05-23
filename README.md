@@ -15,5 +15,5 @@ The models we have implemented are as follows : <br>
 * 1D CNN           RMSE : 3.79188	MAE : 2.1223
 
 ## Usage
-For the Flask part, refer to [this](Flask API/README.md)
-For the Node.js part, refer to [this](WEBAPP/README.md)
+For the Flask part, refer to [this](Flask API/README.md) 
+<br>For the Node.js part, refer to [this](WEBAPP/README.md)
