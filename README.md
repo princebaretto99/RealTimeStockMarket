@@ -8,11 +8,11 @@ This Project consists of two parts<br>
 ## Definition
 We have integrated Different types of Deep Learning Networks in this Repository.<br>
 The models we have implemented are as follows : <br>
-* 1D CNN+LSTM      RMSE : 4.53112	MAE : 3.40922<br>
-* 1D CNN+GRU       RMSE : 3.79188	MAE : 2.1223
-* LSTM             RMSE : 4.84941	MAE : 3.03043
-* GRU              RMSE : 8.4643	MAE : 7.6212
-* 1D CNN           RMSE : 3.79188	MAE : 2.1223
+* 1D CNN+LSTM   -->   *RMSE : 4.53112	MAE : 3.40922*
+* 1D CNN+GRU    -->   *RMSE : 3.79188	MAE : 2.1223*
+* LSTM          -->   *RMSE : 4.84941	MAE : 3.03043*
+* GRU           -->   *RMSE : 8.4643	MAE : 7.6212*
+* 1D CNN        -->   *RMSE : 3.79188	MAE : 2.1223*
 
 ## Usage
 For the Flask part, refer to [this](Flask_API/README.md) 
