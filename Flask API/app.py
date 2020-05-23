@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import load_model
 
-
+KEY = ''#add Your Key
 app=Flask(__name__)
 CORS(app)
 
@@ -43,7 +43,7 @@ def getNewValue(latest_data,name):
 
 def getMinDataTo15Data(company):
     company_symbol = 'NSE:'+ company
-    ts = TimeSeries(key='3IV6H0ADFCU3X5UQ', output_format='pandas')
+    ts = TimeSeries(key=KEY, output_format='pandas')
     data, meta_data = ts.get_intraday(symbol=company_symbol,interval='1min', outputsize='full')
 
     training_set = data.iloc[:900, 0:1]
@@ -74,7 +74,7 @@ def getMinDataTo15Data(company):
 
 def getDetailedMinData(company):
     company_symbol = 'NSE:'+ company
-    ts = TimeSeries(key='3IV6H0ADFCU3X5UQ', output_format='pandas')
+    ts = TimeSeries(key=KEY, output_format='pandas')
     data, meta_data = ts.get_intraday(symbol=company_symbol,interval='1min', outputsize='compact')
 
 
@@ -387,6 +387,3 @@ if __name__ == "__main__":
     app.run(debug=True)
 
 
-
-
-# cors error = "https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9"
