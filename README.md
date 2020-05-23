@@ -2,7 +2,7 @@
 
 ## Structure
 This Project consists of two parts<br>
-1: **Flask API** : This is responsible for excecuting the model predictions<br>
+1: **Flask API**       : This is responsible for excecuting the model predictions<br>
 2: **Node.js Web App** : This is responsible for rendering the Dashboard Pages [*Just Because I wanted to practice Node.js, you can do it using Flask too*]
 
 ## Definition
@@ -16,4 +16,5 @@ The models we have implemented are as follows : <br>
 
 ## Usage
 For the Flask part, refer to [this](Flask API/README.md) 
-<br>For the Node.js part, refer to [this](WEBAPP/README.md)
+
+For the Node.js part, refer to [this] (WEBAPP/README.md)
